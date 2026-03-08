@@ -4,6 +4,12 @@
   "use strict";
 
   /* ========================================
+     SUPABASE CONFIG
+     ======================================== */
+  var SUPABASE_URL = "https://adfxertqtrisgyujmjkm.supabase.co"; // e.g. "https://xyzcompany.supabase.co"
+  var SUPABASE_KEY = "sb_publishable_mCTFFkVk8j2NV-DFtq1ahQ_xIHG1N1A"; // anon/public key (safe for frontend)
+
+  /* ========================================
      THEME TOGGLE
      ======================================== */
   const themeToggle = document.querySelector("[data-theme-toggle]");
@@ -322,13 +328,77 @@
 
       isSubmitting = true;
       var submitBtn = form.querySelector(".form-submit");
-      if (submitBtn) submitBtn.setAttribute("disabled", "true");
+      var submitBtnHTML = submitBtn ? submitBtn.innerHTML : "";
+      if (submitBtn) {
+        submitBtn.setAttribute("disabled", "true");
+        submitBtn.innerHTML = "Submitting\u2026";
+      }
 
-      form.hidden = true;
-      formSuccess.hidden = false;
-      formSuccess.scrollIntoView({ behavior: "smooth", block: "start" });
-      showToast("Application submitted successfully!");
+      submitApplication().then(function () {
+        form.hidden = true;
+        formSuccess.hidden = false;
+        formSuccess.scrollIntoView({ behavior: "smooth", block: "start" });
+        showToast("Application submitted successfully!");
+      }).catch(function () {
+        showToast("Something went wrong. Please try again.");
+        isSubmitting = false;
+        if (submitBtn) {
+          submitBtn.removeAttribute("disabled");
+          submitBtn.innerHTML = submitBtnHTML;
+        }
+      });
     });
+
+    function submitApplication() {
+      var headers = {
+        "apikey": SUPABASE_KEY,
+        "Authorization": "Bearer " + SUPABASE_KEY
+      };
+
+      // 1. Upload resume if provided
+      var resumePromise;
+      if (fileInput && fileInput.files && fileInput.files.length > 0) {
+        var file = fileInput.files[0];
+        var fileName = Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+        resumePromise = fetch(SUPABASE_URL + "/storage/v1/object/resumes/" + encodeURIComponent(fileName), {
+          method: "POST",
+          headers: Object.assign({}, headers, { "Content-Type": file.type }),
+          body: file
+        }).then(function (res) {
+          if (!res.ok) return null;
+          return SUPABASE_URL + "/storage/v1/object/public/resumes/" + encodeURIComponent(fileName);
+        }).catch(function () { return null; });
+      } else {
+        resumePromise = Promise.resolve(null);
+      }
+
+      // 2. Insert application row
+      return resumePromise.then(function (resumeUrl) {
+        var data = {
+          first_name: document.getElementById("firstName").value.trim(),
+          last_name: document.getElementById("lastName").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          phone: document.getElementById("phone").value.trim(),
+          state: document.getElementById("state").value,
+          role: document.getElementById("role").value,
+          experience: document.getElementById("experience").value,
+          availability: form.querySelector('input[name="availability"]:checked').value,
+          bio: document.getElementById("bio").value.trim() || null,
+          resume_url: resumeUrl
+        };
+
+        return fetch(SUPABASE_URL + "/rest/v1/applications", {
+          method: "POST",
+          headers: Object.assign({}, headers, {
+            "Content-Type": "application/json",
+            "Prefer": "return=minimal"
+          }),
+          body: JSON.stringify(data)
+        }).then(function (res) {
+          if (!res.ok) throw new Error("Insert failed");
+        });
+      });
+    }
   }
 
   function showFieldError(input) {

@@ -1,0 +1,5 @@
+.git
+.gitignore
+nohup.out
+Dockerfile
+.dockerignore
