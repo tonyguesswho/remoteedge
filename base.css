@@ -30,6 +30,7 @@ h1, h2, h3, h4, h5, h6 { text-wrap: balance; line-height: 1.15; }
 p, li, figcaption { text-wrap: pretty; max-width: 72ch; }
 
 ::selection {
+  background: var(--color-primary-highlight);
   background: oklch(from var(--color-primary) l c h / 0.25);
   color: var(--color-text);
 }
@@ -62,4 +63,23 @@ a, button, [role="button"], [role="link"], input, textarea, select {
 .sr-only {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: var(--space-2) var(--space-4);
+  background: var(--color-primary);
+  color: var(--color-text-inverse);
+  z-index: 200;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  text-decoration: none;
+  transform: translateY(-100%);
+  transition: transform var(--transition-fast);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
 }

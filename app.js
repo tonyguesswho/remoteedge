@@ -38,18 +38,15 @@
      STICKY NAV SCROLL BEHAVIOR
      ======================================== */
   const nav = document.getElementById("nav");
-  let lastScroll = 0;
 
   window.addEventListener(
     "scroll",
     function () {
-      var scrollY = window.scrollY;
-      if (scrollY > 10) {
+      if (window.scrollY > 10) {
         nav.classList.add("nav--scrolled");
       } else {
         nav.classList.remove("nav--scrolled");
       }
-      lastScroll = scrollY;
     },
     { passive: true }
   );
@@ -70,7 +67,6 @@
         : '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     });
 
-    // Close mobile menu when a link is clicked
     mobileMenu.querySelectorAll("a").forEach(function (link) {
       link.addEventListener("click", function () {
         mobileMenu.hidden = true;
@@ -112,16 +108,23 @@
 
     statsAnimated = true;
 
-    counters.forEach(function (counter) {
+    counters.forEach(function (counter, index) {
       var target = parseInt(counter.getAttribute("data-target"), 10);
-      var duration = 1200;
+      var duration = 1600;
       var startTime = null;
+      // Stagger each counter
+      var delay = index * 200;
 
       function step(timestamp) {
         if (!startTime) startTime = timestamp;
-        var progress = Math.min((timestamp - startTime) / duration, 1);
-        // Ease out cubic
-        var eased = 1 - Math.pow(1 - progress, 3);
+        var elapsed = timestamp - startTime - delay;
+        if (elapsed < 0) {
+          requestAnimationFrame(step);
+          return;
+        }
+        var progress = Math.min(elapsed / duration, 1);
+        // Ease out expo for smoother deceleration
+        var eased = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
         counter.textContent = Math.round(target * eased);
         if (progress < 1) {
           requestAnimationFrame(step);
@@ -135,25 +138,36 @@
   }
 
   window.addEventListener("scroll", animateCounters, { passive: true });
-  // Also check on load
   animateCounters();
 
   /* ========================================
-     SCROLL REVEAL
+     SCROLL REVEAL — staggered by group
      ======================================== */
-  var revealElements = document.querySelectorAll(".fade-in, .reveal-up");
+  var revealElements = document.querySelectorAll(".fade-in");
   if (revealElements.length > 0 && "IntersectionObserver" in window) {
     var observer = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
-            entry.target.classList.remove("js-reveal-hidden");
-            entry.target.classList.add("js-reveal-visible");
-            observer.unobserve(entry.target);
+            // Stagger siblings in grids
+            var el = entry.target;
+            var parent = el.parentElement;
+            var siblings = parent
+              ? Array.from(parent.querySelectorAll(":scope > .fade-in.js-reveal-hidden"))
+              : [];
+            var idx = siblings.indexOf(el);
+            var delay = idx >= 0 ? idx * 80 : 0;
+
+            setTimeout(function () {
+              el.classList.remove("js-reveal-hidden");
+              el.classList.add("js-reveal-visible");
+            }, delay);
+
+            observer.unobserve(el);
           }
         });
       },
-      { threshold: 0.08, rootMargin: "0px 0px -20px 0px" }
+      { threshold: 0.06, rootMargin: "0px 0px -40px 0px" }
     );
 
     revealElements.forEach(function (el) {
@@ -163,13 +177,46 @@
   }
 
   /* ========================================
+     HERO SHAPE PARALLAX
+     Store base transforms, apply parallax via rAF-guarded scroll.
+     ======================================== */
+  var heroShapes = document.querySelectorAll(".hero-shape");
+  if (heroShapes.length > 0) {
+    var speeds = [0.03, -0.02, 0.015];
+    var baseTransforms = [];
+    heroShapes.forEach(function (shape) {
+      baseTransforms.push(getComputedStyle(shape).transform || "none");
+    });
+
+    var parallaxTicking = false;
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!parallaxTicking) {
+          parallaxTicking = true;
+          requestAnimationFrame(function () {
+            var scrollY = window.scrollY;
+            heroShapes.forEach(function (shape, i) {
+              var speed = speeds[i] || 0.02;
+              var base = baseTransforms[i];
+              var translateY = "translateY(" + (scrollY * speed) + "px)";
+              shape.style.transform = (base !== "none" ? base + " " : "") + translateY;
+            });
+            parallaxTicking = false;
+          });
+        }
+      },
+      { passive: true }
+    );
+  }
+
+  /* ========================================
      FORM VALIDATION & SUBMISSION
      ======================================== */
   var form = document.getElementById("application-form");
   var formSuccess = document.getElementById("form-success");
 
   if (form) {
-    // File upload label update
     var fileInput = document.getElementById("resume");
     var fileLabel = document.querySelector(".file-label");
     var fileText = document.querySelector(".file-text");
@@ -186,7 +233,6 @@
       });
     }
 
-    // Real-time validation - clear errors on input
     form.querySelectorAll("input, select, textarea").forEach(function (input) {
       input.addEventListener("input", function () {
         clearFieldError(this);
@@ -196,19 +242,14 @@
       });
     });
 
+    var isSubmitting = false;
     form.addEventListener("submit", function (e) {
       e.preventDefault();
+      if (isSubmitting) return;
 
-      // Validate all fields
       var isValid = true;
 
-      // Required text/email/tel inputs
-      var requiredInputs = [
-        "firstName",
-        "lastName",
-        "email",
-        "phone",
-      ];
+      var requiredInputs = ["firstName", "lastName", "email", "phone"];
       requiredInputs.forEach(function (name) {
         var input = document.getElementById(name);
         if (!input || !input.value.trim()) {
@@ -220,7 +261,6 @@
         }
       });
 
-      // Required selects
       var requiredSelects = ["state", "role", "experience"];
       requiredSelects.forEach(function (name) {
         var select = document.getElementById(name);
@@ -230,7 +270,6 @@
         }
       });
 
-      // Required radio
       var availabilityChecked = form.querySelector(
         'input[name="availability"]:checked'
       );
@@ -241,7 +280,6 @@
       }
 
       if (!isValid) {
-        // Scroll to first error
         var firstError = form.querySelector(".error, .form-error.visible");
         if (firstError) {
           firstError.scrollIntoView({ behavior: "smooth", block: "center" });
@@ -249,12 +287,13 @@
         return;
       }
 
-      // Show success
+      isSubmitting = true;
+      var submitBtn = form.querySelector(".form-submit");
+      if (submitBtn) submitBtn.setAttribute("disabled", "true");
+
       form.hidden = true;
       formSuccess.hidden = false;
       formSuccess.scrollIntoView({ behavior: "smooth", block: "start" });
-
-      // Show toast
       showToast("Application submitted successfully!");
     });
   }
@@ -262,6 +301,7 @@
   function showFieldError(input) {
     if (!input) return;
     input.classList.add("error");
+    input.setAttribute("aria-invalid", "true");
     var errorEl = document.getElementById(input.id + "-error");
     if (errorEl) errorEl.classList.add("visible");
   }
@@ -269,10 +309,10 @@
   function clearFieldError(input) {
     if (!input) return;
     input.classList.remove("error");
+    input.removeAttribute("aria-invalid");
     var errorEl = document.getElementById(input.id + "-error");
     if (errorEl) errorEl.classList.remove("visible");
 
-    // Also clear availability error when a radio is selected
     if (input.name === "availability") {
       var avErr = document.getElementById("availability-error");
       if (avErr) avErr.classList.remove("visible");
@@ -287,7 +327,6 @@
      TOAST NOTIFICATION
      ======================================== */
   function showToast(message) {
-    // Remove existing toast
     var existing = document.querySelector(".toast");
     if (existing) existing.remove();
 
@@ -298,19 +337,17 @@
     toast.setAttribute("aria-live", "polite");
     document.body.appendChild(toast);
 
-    // Trigger animation
     requestAnimationFrame(function () {
       requestAnimationFrame(function () {
         toast.classList.add("visible");
       });
     });
 
-    // Auto-hide after 4s
     setTimeout(function () {
       toast.classList.remove("visible");
       setTimeout(function () {
         toast.remove();
-      }, 400);
+      }, 500);
     }, 4000);
   }
 })();

@@ -1,21 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <!--
-     ______                            __
-    / ____/___  ____ ___  ____  __  __/ /____  _____
-   / /   / __ \/ __ `__ \/ __ \/ / / / __/ _ \/ ___/
-  / /___/ /_/ / / / / / / /_/ / /_/ / /_/  __/ /
-  \____/\____/_/ /_/ /_/ .___/\__,_/\__/\___/_/
-                      /_/
-          Created with Perplexity Computer
-          https://www.perplexity.ai/computer
-  -->
-  <meta name="generator" content="Perplexity Computer">
-  <meta name="author" content="Perplexity Computer">
-  <meta property="og:see_also" content="https://www.perplexity.ai/computer">
-  <link rel="author" href="https://www.perplexity.ai/computer">
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RemoteEdge — Your Edge to Remote Work | Get Paid to Work Remotely</title>
@@ -40,7 +25,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..700;1,9..40,300..700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400;1,9..144,700&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -50,13 +35,13 @@
     "name": "RemoteEdge",
     "url": "https://remoteedge.com",
     "description": "RemoteEdge connects US-based workers with flexible, high-paying remote job opportunities.",
-    "sameAs": [],
-    "creator": {
-      "@type": "SoftwareApplication",
-      "name": "Perplexity Computer",
-      "url": "https://www.perplexity.ai/computer"
-    }
+    "sameAs": []
   }
+  </script>
+
+  <!-- Prevent theme flash: detect preference before first paint -->
+  <script>
+    (function(){var t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t)})();
   </script>
 
   <link rel="stylesheet" href="./base.css">
@@ -65,8 +50,11 @@
 </head>
 <body>
 
+  <!-- Grain texture overlay (CSS-only, no realtime SVG filter) -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
   <!-- Skip to content -->
-  <a href="#main" class="sr-only" style="position:absolute;top:0;left:0;padding:var(--space-2) var(--space-4);background:var(--color-primary);color:var(--color-text-inverse);z-index:200;">Skip to main content</a>
+  <a href="#main" class="skip-link">Skip to main content</a>
 
   <!-- ========================================
        NAVIGATION
@@ -81,7 +69,7 @@
           <path d="M8 16L12 12L16 16L12 20Z" fill="white"/>
           <path d="M12 8L18 14V10L12 4V8Z" fill="white" opacity="0.7"/>
           <!-- Wordmark -->
-          <text x="32" y="22" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="18" fill="currentColor">RemoteEdge</text>
+          <text x="32" y="22" font-family="'Fraunces', Georgia, serif" font-weight="700" font-size="18" fill="currentColor">RemoteEdge</text>
         </svg>
       </a>
 
@@ -110,7 +98,7 @@
         <a href="#how-it-works" class="mobile-menu-link">How It Works</a>
         <a href="#roles" class="mobile-menu-link">Roles</a>
         <a href="#faq" class="mobile-menu-link">FAQ</a>
-        <a href="#apply" class="btn btn-primary" style="width: 100%; margin-top: var(--space-2);">Apply Now</a>
+        <a href="#apply" class="btn btn-primary mobile-menu-cta">Apply Now</a>
       </nav>
     </div>
   </header>
@@ -127,7 +115,7 @@
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="3" fill="var(--color-primary)"/><circle cx="8" cy="8" r="6" stroke="var(--color-primary)" stroke-width="1.5" opacity="0.3"/></svg>
             <span>Now accepting applications</span>
           </div>
-          <h1 class="hero-title fade-in">Get Paid to<br>Work Remotely</h1>
+          <h1 class="hero-title fade-in">Get Paid to<br><em>Work Remotely</em></h1>
           <p class="hero-subtitle fade-in">Join thousands of US-based workers earning great pay from home. Apply in minutes, get matched to verified opportunities, and start your remote career — completely free.</p>
           <div class="hero-actions fade-in">
             <a href="#apply" class="btn btn-primary btn-lg">
@@ -202,7 +190,7 @@
         <div class="categories-grid">
           <!-- AI Training -->
           <div class="category-card fade-in">
-            <div class="category-icon" style="background: color-mix(in srgb, var(--color-cat-purple) 12%, var(--color-surface));">
+            <div class="category-icon" data-cat="purple">
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-cat-purple)" stroke-width="1.5">
                 <circle cx="14" cy="14" r="11"/>
                 <circle cx="14" cy="14" r="5"/>
@@ -217,7 +205,7 @@
 
           <!-- Virtual Assistant -->
           <div class="category-card fade-in">
-            <div class="category-icon" style="background: color-mix(in srgb, var(--color-cat-blue) 12%, var(--color-surface));">
+            <div class="category-icon" data-cat="blue">
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-cat-blue)" stroke-width="1.5">
                 <rect x="4" y="6" width="20" height="16" rx="3"/>
                 <path d="M4 11h20"/>
@@ -232,7 +220,7 @@
 
           <!-- Customer Support -->
           <div class="category-card fade-in">
-            <div class="category-icon" style="background: color-mix(in srgb, var(--color-cat-coral) 12%, var(--color-surface));">
+            <div class="category-icon" data-cat="coral">
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-cat-coral)" stroke-width="1.5">
                 <path d="M20 18c2-1 4-3.5 4-7 0-5-4.5-7-10-7S4 6 4 11c0 3.5 2 6 4 7v4l4-3h4"/>
                 <circle cx="10" cy="12" r="1" fill="var(--color-cat-coral)"/>
@@ -247,7 +235,7 @@
 
           <!-- Content & Writing -->
           <div class="category-card fade-in">
-            <div class="category-icon" style="background: color-mix(in srgb, var(--color-cat-teal) 12%, var(--color-surface));">
+            <div class="category-icon" data-cat="teal">
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-cat-teal)" stroke-width="1.5">
                 <path d="M5 24l2-6L20 5l3 3L10 21z"/>
                 <path d="M17 8l3 3"/>
@@ -261,7 +249,7 @@
 
           <!-- Sales & Marketing -->
           <div class="category-card fade-in">
-            <div class="category-icon" style="background: color-mix(in srgb, var(--color-cat-amber) 12%, var(--color-surface));">
+            <div class="category-icon" data-cat="amber">
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-cat-amber)" stroke-width="1.5">
                 <path d="M4 22V14l5-4 5 6 5-8 5 4v10z"/>
                 <circle cx="9" cy="10" r="2" fill="var(--color-cat-amber)" opacity="0.3"/>
@@ -275,7 +263,7 @@
 
           <!-- Data Entry -->
           <div class="category-card fade-in">
-            <div class="category-icon" style="background: color-mix(in srgb, var(--color-cat-indigo) 12%, var(--color-surface));">
+            <div class="category-icon" data-cat="indigo">
               <svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="var(--color-cat-indigo)" stroke-width="1.5">
                 <rect x="4" y="4" width="20" height="20" rx="3"/>
                 <path d="M4 10h20M10 10v14"/>
@@ -385,8 +373,9 @@
     <!-- ========================================
          STATS
          ======================================== -->
-    <section class="section stats-section">
+    <section class="section stats-section" aria-label="RemoteEdge statistics">
       <div class="container">
+        <h2 class="sr-only">RemoteEdge by the Numbers</h2>
         <div class="stats-grid fade-in">
           <div class="stat-item">
             <span class="stat-number" data-target="500">0</span>
@@ -425,33 +414,33 @@
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="firstName">First Name <span class="required">*</span></label>
-                <input type="text" id="firstName" name="firstName" class="form-input" required placeholder="John">
-                <span class="form-error" id="firstName-error">Please enter your first name</span>
+                <input type="text" id="firstName" name="firstName" class="form-input" required placeholder="John" aria-describedby="firstName-error">
+                <span class="form-error" id="firstName-error" role="alert">Please enter your first name</span>
               </div>
               <div class="form-group">
                 <label class="form-label" for="lastName">Last Name <span class="required">*</span></label>
-                <input type="text" id="lastName" name="lastName" class="form-input" required placeholder="Doe">
-                <span class="form-error" id="lastName-error">Please enter your last name</span>
+                <input type="text" id="lastName" name="lastName" class="form-input" required placeholder="Doe" aria-describedby="lastName-error">
+                <span class="form-error" id="lastName-error" role="alert">Please enter your last name</span>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="email">Email Address <span class="required">*</span></label>
-                <input type="email" id="email" name="email" class="form-input" required placeholder="john@example.com">
-                <span class="form-error" id="email-error">Please enter a valid email address</span>
+                <input type="email" id="email" name="email" class="form-input" required placeholder="john@example.com" aria-describedby="email-error">
+                <span class="form-error" id="email-error" role="alert">Please enter a valid email address</span>
               </div>
               <div class="form-group">
                 <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
-                <input type="tel" id="phone" name="phone" class="form-input" required placeholder="(555) 123-4567">
-                <span class="form-error" id="phone-error">Please enter your phone number</span>
+                <input type="tel" id="phone" name="phone" class="form-input" required placeholder="(555) 123-4567" aria-describedby="phone-error">
+                <span class="form-error" id="phone-error" role="alert">Please enter your phone number</span>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="state">State <span class="required">*</span></label>
-                <select id="state" name="state" class="form-select" required>
+                <select id="state" name="state" class="form-select" required aria-describedby="state-error">
                   <option value="">Select your state</option>
                   <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option>
                   <option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option>
@@ -471,11 +460,11 @@
                   <option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option>
                   <option value="WI">Wisconsin</option><option value="WY">Wyoming</option><option value="DC">District of Columbia</option>
                 </select>
-                <span class="form-error" id="state-error">Please select your state</span>
+                <span class="form-error" id="state-error" role="alert">Please select your state</span>
               </div>
               <div class="form-group">
                 <label class="form-label" for="role">Preferred Role <span class="required">*</span></label>
-                <select id="role" name="role" class="form-select" required>
+                <select id="role" name="role" class="form-select" required aria-describedby="role-error">
                   <option value="">Select a role</option>
                   <option value="ai-training">AI Training & Data Annotation</option>
                   <option value="virtual-assistant">Virtual Assistant</option>
@@ -485,21 +474,21 @@
                   <option value="data-entry">Data Entry & Research</option>
                   <option value="open">Open to Any</option>
                 </select>
-                <span class="form-error" id="role-error">Please select a preferred role</span>
+                <span class="form-error" id="role-error" role="alert">Please select a preferred role</span>
               </div>
             </div>
 
             <div class="form-row">
               <div class="form-group">
                 <label class="form-label" for="experience">Experience Level <span class="required">*</span></label>
-                <select id="experience" name="experience" class="form-select" required>
+                <select id="experience" name="experience" class="form-select" required aria-describedby="experience-error">
                   <option value="">Select experience level</option>
                   <option value="none">No Experience</option>
                   <option value="1-2">1–2 Years</option>
                   <option value="3-5">3–5 Years</option>
                   <option value="5+">5+ Years</option>
                 </select>
-                <span class="form-error" id="experience-error">Please select your experience level</span>
+                <span class="form-error" id="experience-error" role="alert">Please select your experience level</span>
               </div>
               <div class="form-group">
                 <label class="form-label">Availability <span class="required">*</span></label>
@@ -507,21 +496,21 @@
                   <legend class="sr-only">Select your availability</legend>
                   <label class="radio-label">
                     <input type="radio" name="availability" value="part-time" required>
-                    <span class="radio-custom"></span>
+
                     Part-time
                   </label>
                   <label class="radio-label">
                     <input type="radio" name="availability" value="full-time">
-                    <span class="radio-custom"></span>
+
                     Full-time
                   </label>
                   <label class="radio-label">
                     <input type="radio" name="availability" value="either">
-                    <span class="radio-custom"></span>
+
                     Either
                   </label>
                 </fieldset>
-                <span class="form-error" id="availability-error">Please select your availability</span>
+                <span class="form-error" id="availability-error" role="alert">Please select your availability</span>
               </div>
             </div>
 
@@ -649,7 +638,7 @@
             <rect x="0" y="4" width="24" height="24" rx="6" fill="var(--color-primary)"/>
             <path d="M8 16L12 12L16 16L12 20Z" fill="white"/>
             <path d="M12 8L18 14V10L12 4V8Z" fill="white" opacity="0.7"/>
-            <text x="32" y="22" font-family="'Plus Jakarta Sans', sans-serif" font-weight="700" font-size="18" fill="currentColor">RemoteEdge</text>
+            <text x="32" y="22" font-family="'Fraunces', Georgia, serif" font-weight="700" font-size="18" fill="currentColor">RemoteEdge</text>
           </svg>
         </a>
         <p class="footer-tagline">Your Edge to Remote Work</p>
@@ -662,7 +651,6 @@
       </nav>
       <div class="footer-bottom">
         <p class="footer-copyright">&copy; 2026 RemoteEdge. All rights reserved.</p>
-        <a href="https://www.perplexity.ai/computer" target="_blank" rel="noopener noreferrer" class="footer-attribution">Created with Perplexity Computer</a>
       </div>
     </div>
   </footer>
