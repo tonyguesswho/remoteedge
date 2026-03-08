@@ -273,6 +273,13 @@
   box-shadow: var(--shadow-sm);
 }
 
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.45;
+  pointer-events: none;
+  cursor: not-allowed;
+}
+
 .btn-primary {
   background: var(--color-primary);
   color: var(--color-text-inverse);
@@ -340,11 +347,32 @@
   box-shadow: 0 0 0 4px var(--color-primary-highlight);
 }
 
+.form-select:invalid {
+  color: var(--color-text-faint);
+}
+
+.form-select option {
+  color: var(--color-text);
+}
+
 .form-input.error,
 .form-select.error,
 .form-textarea.error {
   border-color: var(--color-error);
   box-shadow: 0 0 0 4px var(--color-error-highlight);
+}
+
+/* Form validation shake */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-6px); }
+  40% { transform: translateX(5px); }
+  60% { transform: translateX(-4px); }
+  80% { transform: translateX(2px); }
+}
+
+.shake {
+  animation: shake 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .form-error {

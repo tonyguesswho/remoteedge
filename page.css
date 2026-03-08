@@ -243,7 +243,7 @@
   color: var(--color-text);
   margin-bottom: var(--space-8);
   letter-spacing: -0.03em;
-  line-height: 0.95;
+  line-height: 1.0;
 }
 
 .hero-title em {
@@ -251,7 +251,6 @@
   font-weight: 300;
   color: var(--color-primary);
   position: relative;
-  white-space: nowrap;
 }
 
 .hero-title em::after {
@@ -365,6 +364,39 @@
   opacity: 0.6;
 }
 
+/* Hero entrance choreography — staggered reveals */
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.hero-reveal {
+  animation: hero-enter 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.hero-content > .hero-reveal:nth-child(1) { animation-delay: 0.05s; }
+.hero-content > .hero-reveal:nth-child(2) { animation-delay: 0.2s; }
+.hero-content > .hero-reveal:nth-child(3) { animation-delay: 0.35s; }
+.hero-content > .hero-reveal:nth-child(4) { animation-delay: 0.5s; }
+.hero-content > .hero-reveal:nth-child(5) { animation-delay: 0.65s; }
+
+/* Hero underline sweep — syncs with title reveal */
+@keyframes underline-sweep {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+.hero-title em::after {
+  transform-origin: left;
+  animation: underline-sweep 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.7s both;
+}
+
 /* ========================================
    JOB CATEGORIES
    ======================================== */
@@ -451,6 +483,11 @@
   align-items: center;
   justify-content: center;
   margin-bottom: var(--space-5);
+  transition: transform var(--transition-interactive);
+}
+
+.category-card:hover .category-icon {
+  transform: translateY(-3px);
 }
 
 .category-icon svg {
@@ -501,7 +538,6 @@
   align-items: center;
   justify-content: center;
   padding-block: var(--space-4);
-  background: var(--color-bg);
 }
 
 .editorial-divider::before,
@@ -890,6 +926,11 @@
   box-shadow: inset 0 0 0 3px var(--color-bg);
 }
 
+.radio-label input[type="radio"]:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
 /* File upload */
 .file-upload {
   position: relative;
@@ -978,6 +1019,29 @@
   color: var(--color-text-faint);
 }
 
+/* Success checkmark stroke-draw animation */
+@keyframes circle-draw {
+  from { stroke-dashoffset: 140; }
+  to   { stroke-dashoffset: 0; }
+}
+
+@keyframes checkmark-draw {
+  from { stroke-dashoffset: 30; }
+  to   { stroke-dashoffset: 0; }
+}
+
+.form-success svg circle {
+  stroke-dasharray: 140;
+  stroke-dashoffset: 140;
+  animation: circle-draw 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
+}
+
+.form-success svg path {
+  stroke-dasharray: 30;
+  stroke-dashoffset: 30;
+  animation: checkmark-draw 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both;
+}
+
 /* ========================================
    FAQ
    ======================================== */
@@ -1037,10 +1101,22 @@
 }
 
 .faq-answer {
-  padding-bottom: var(--space-6);
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.faq-answer p {
+.faq-item[open] .faq-answer {
+  grid-template-rows: 1fr;
+}
+
+.faq-item.faq-closing .faq-answer {
+  grid-template-rows: 0fr;
+}
+
+.faq-answer > p {
+  overflow: hidden;
+  padding-bottom: var(--space-6);
   font-size: var(--text-sm);
   color: var(--color-text-muted);
   line-height: 1.8;

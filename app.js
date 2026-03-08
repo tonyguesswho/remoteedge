@@ -317,7 +317,9 @@
 
   function showFieldError(input) {
     if (!input) return;
-    input.classList.add("error");
+    input.classList.remove("shake");
+    void input.offsetWidth;
+    input.classList.add("error", "shake");
     input.setAttribute("aria-invalid", "true");
     var errorEl = document.getElementById(input.id + "-error");
     if (errorEl) errorEl.classList.add("visible");
@@ -367,4 +369,33 @@
       }, 500);
     }, 4000);
   }
+
+  /* ========================================
+     FAQ SMOOTH EXPAND / COLLAPSE
+     CSS handles opening via grid-template-rows.
+     JS intercepts closing to animate before removing [open].
+     ======================================== */
+  document.querySelectorAll(".faq-item").forEach(function (item) {
+    var summary = item.querySelector(".faq-question");
+    if (!summary) return;
+
+    summary.addEventListener("click", function (e) {
+      if (item.open && !item.classList.contains("faq-closing")) {
+        e.preventDefault();
+        item.classList.add("faq-closing");
+
+        var answer = item.querySelector(".faq-answer");
+        if (!answer) return;
+
+        function onEnd(evt) {
+          if (evt.propertyName !== "grid-template-rows") return;
+          item.classList.remove("faq-closing");
+          item.open = false;
+          answer.removeEventListener("transitionend", onEnd);
+        }
+
+        answer.addEventListener("transitionend", onEnd);
+      }
+    });
+  });
 })();
