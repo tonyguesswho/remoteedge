@@ -52,6 +52,7 @@ p, li, figcaption { text-wrap: pretty; max-width: 72ch; }
 
 button { cursor: pointer; background: none; border: none; }
 table { border-collapse: collapse; width: 100%; }
+[hidden] { display: none !important; }
 
 a, button, [role="button"], [role="link"], input, textarea, select {
   transition: color var(--transition-interactive),

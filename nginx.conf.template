@@ -5,4 +5,10 @@ server {
         index index.html;
         try_files $uri $uri/ /index.html;
     }
+
+    # Short cache for HTML/JS/CSS so updates deploy quickly
+    location ~* \.(html|js|css)$ {
+        root /usr/share/nginx/html;
+        add_header Cache-Control "no-cache, must-revalidate";
+    }
 }
