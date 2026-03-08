@@ -22,6 +22,13 @@
         "aria-label",
         "Switch to " + (currentTheme === "dark" ? "light" : "dark") + " mode"
       );
+      // Spin icon on toggle for a satisfying switch
+      themeToggle.style.transition = "transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)";
+      themeToggle.style.transform = "rotate(360deg)";
+      setTimeout(function () {
+        themeToggle.style.transition = "";
+        themeToggle.style.transform = "";
+      }, 500);
       updateThemeIcon();
     });
   }
@@ -130,6 +137,15 @@
           requestAnimationFrame(step);
         } else {
           counter.textContent = target;
+          // Brief scale pulse on completion
+          var item = counter.closest(".stat-item");
+          if (item) {
+            item.style.transition = "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)";
+            item.style.transform = "scale(1.08)";
+            setTimeout(function () {
+              item.style.transform = "scale(1)";
+            }, 200);
+          }
         }
       }
 
@@ -398,4 +414,16 @@
       }
     });
   });
+
+  /* ========================================
+     CONSOLE EASTER EGG
+     ======================================== */
+  console.log(
+    "%c✦ RemoteEdge %c\n" +
+    "The future of work is where you are.\n\n" +
+    "Curious about what's under the hood?\n" +
+    "We'd love to hear from you → hello@remoteedge.com",
+    "font-family: Georgia, serif; font-size: 18px; font-weight: bold; font-style: italic; color: #1B4332;",
+    "font-family: sans-serif; font-size: 12px; color: #5C5A52;"
+  );
 })();
