@@ -156,7 +156,7 @@
               ? Array.from(parent.querySelectorAll(":scope > .fade-in.js-reveal-hidden"))
               : [];
             var idx = siblings.indexOf(el);
-            var delay = idx >= 0 ? idx * 80 : 0;
+            var delay = idx >= 0 ? idx * 100 : 0;
 
             setTimeout(function () {
               el.classList.remove("js-reveal-hidden");
@@ -167,11 +167,28 @@
           }
         });
       },
-      { threshold: 0.06, rootMargin: "0px 0px -40px 0px" }
+      { threshold: 0.06, rootMargin: "0px 0px -60px 0px" }
     );
 
     revealElements.forEach(function (el) {
       el.classList.add("js-reveal-hidden");
+
+      // Assign directional reveals for variety
+      if (el.closest(".stats-section") || el.closest(".form-section")) {
+        el.setAttribute("data-reveal", "scale");
+      } else if (el.closest(".hero-visual")) {
+        el.setAttribute("data-reveal", "scale");
+      }
+      // Grid children: alternate left/right on even/odd
+      var parent = el.parentElement;
+      if (parent && (parent.classList.contains("why-grid") || parent.classList.contains("categories-grid"))) {
+        var gridSiblings = Array.from(parent.querySelectorAll(":scope > .fade-in"));
+        var gridIdx = gridSiblings.indexOf(el);
+        if (gridIdx % 2 === 1) {
+          el.setAttribute("data-reveal", "right");
+        }
+      }
+
       observer.observe(el);
     });
   }
