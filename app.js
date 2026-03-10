@@ -4,6 +4,31 @@
   "use strict";
 
   /* ========================================
+     CONSOLE EASTER EGG
+     ======================================== */
+  console.log(
+    '%c RemoteEdge ',
+    'background: #1B4332; color: #FAF7F2; font-size: 16px; font-weight: bold; padding: 8px 16px; border-radius: 4px;'
+  );
+  console.log(
+    '%cBuilding the future of remote work.\nCurious about what\u2019s under the hood? We\u2019d love to hear from you \u2014 support@remoteedge.org',
+    'color: #5C5A52; font-size: 12px; line-height: 1.6;'
+  );
+
+  /* ========================================
+     SCROLL PROGRESS BAR
+     ======================================== */
+  var scrollProgress = document.getElementById('scroll-progress');
+  if (scrollProgress) {
+    window.addEventListener('scroll', function () {
+      var scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollHeight > 0) {
+        scrollProgress.style.width = ((window.scrollY / scrollHeight) * 100) + '%';
+      }
+    }, { passive: true });
+  }
+
+  /* ========================================
      SUPABASE CONFIG
      ======================================== */
   var SUPABASE_URL = "https://adfxertqtrisgyujmjkm.supabase.co"; // e.g. "https://xyzcompany.supabase.co"
@@ -585,6 +610,7 @@
         formSuccess.hidden = false;
         formSuccess.scrollIntoView({ behavior: "smooth", block: "start" });
         showToast("Application submitted successfully!");
+        setTimeout(launchConfetti, 600);
       }).catch(function () {
         showToast("We couldn't submit your application. Check your connection and try again.");
         isSubmitting = false;
@@ -610,6 +636,67 @@
     }
   }
 
+
+  /* ========================================
+     CONFETTI CELEBRATION
+     ======================================== */
+  function launchConfetti() {
+    // Respect reduced motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var canvas = document.createElement('canvas');
+    canvas.style.cssText = 'position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9998';
+    document.body.appendChild(canvas);
+    var ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    var colors = ['#1B4332', '#A84830', '#2D6A4F', '#C96B55', '#C49234', '#52B788'];
+    var particles = [];
+    for (var i = 0; i < 80; i++) {
+      particles.push({
+        x: canvas.width * 0.5 + (Math.random() - 0.5) * 300,
+        y: canvas.height * 0.4,
+        vx: (Math.random() - 0.5) * 14,
+        vy: Math.random() * -12 - 4,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        w: Math.random() * 8 + 4,
+        h: Math.random() * 4 + 2,
+        rot: Math.random() * 360,
+        rv: (Math.random() - 0.5) * 12,
+        opacity: 1
+      });
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      var alive = false;
+      for (var i = 0; i < particles.length; i++) {
+        var p = particles[i];
+        p.vy += 0.14;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.99;
+        p.rot += p.rv;
+        p.opacity -= 0.007;
+        if (p.opacity <= 0) continue;
+        alive = true;
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.rot * Math.PI / 180);
+        ctx.globalAlpha = Math.max(0, p.opacity);
+        ctx.fillStyle = p.color;
+        ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+        ctx.restore();
+      }
+      if (alive) {
+        requestAnimationFrame(frame);
+      } else {
+        canvas.remove();
+      }
+    }
+    requestAnimationFrame(frame);
+  }
 
   /* ========================================
      TOAST NOTIFICATION
@@ -668,15 +755,4 @@
     });
   });
 
-  /* ========================================
-     CONSOLE EASTER EGG
-     ======================================== */
-  console.log(
-    "%c✦ RemoteEdge %c\n" +
-    "The future of work is where you are.\n\n" +
-    "Curious about what's under the hood?\n" +
-    "We'd love to hear from you → hello@remoteedge.com",
-    "font-family: Georgia, serif; font-size: 18px; font-weight: bold; font-style: italic; color: #1B4332;",
-    "font-family: sans-serif; font-size: 12px; color: #5C5A52;"
-  );
 })();
