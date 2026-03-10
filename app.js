@@ -250,112 +250,289 @@
   }
 
   /* ========================================
-     FORM VALIDATION & SUBMISSION
+     CONVERSATIONAL FORM
      ======================================== */
-  var form = document.getElementById("application-form");
+  var convoWrapper = document.getElementById("convo-wrapper");
   var formSuccess = document.getElementById("form-success");
 
-  if (form) {
-    var fileInput = document.getElementById("resume");
-    var fileLabel = document.querySelector(".file-label");
-    var fileText = document.querySelector(".file-text");
+  if (convoWrapper) {
+    // All step numbers in order. Step 4 (school details) is conditional.
+    var ALL_STEPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    var CONDITIONAL_STEP = 4; // school details — only if student
+    var LAST_STEP = 15;
+    var isStudent = false;
+    var currentStep = 1;
+    var isSubmitting = false;
 
+    var progressBar = document.getElementById("convo-progress-bar");
+    var stepCount = document.getElementById("convo-step-count");
+    var btnNext = document.getElementById("convo-next");
+    var btnBack = document.getElementById("convo-back");
+    var enterHint = document.getElementById("convo-enter-hint");
+    var fileInput = document.getElementById("cf-resume");
+    var fileLabel = document.getElementById("convo-file-label");
+    var fileText = document.getElementById("convo-file-text");
+    var fileArea = document.getElementById("convo-file-area");
+
+    function getActiveSteps() {
+      return ALL_STEPS.filter(function (s) {
+        if (s === CONDITIONAL_STEP && !isStudent) return false;
+        return true;
+      });
+    }
+
+    // Choice buttons (role, experience, availability, student)
+    setupChoiceGroup("cf-role-choices", "cf-role");
+    setupChoiceGroup("cf-experience-choices", "cf-experience");
+    setupChoiceGroup("cf-availability-choices", "cf-availability");
+    setupChoiceGroup("cf-student-choices", "cf-student", function (value) {
+      isStudent = value === "yes";
+    });
+
+    function setupChoiceGroup(groupId, hiddenId, onSelect) {
+      var group = document.getElementById(groupId);
+      var hidden = document.getElementById(hiddenId);
+      if (!group || !hidden) return;
+      group.addEventListener("click", function (e) {
+        var btn = e.target.closest(".convo-choice");
+        if (!btn) return;
+        group.querySelectorAll(".convo-choice").forEach(function (b) {
+          b.classList.remove("selected");
+        });
+        btn.classList.add("selected");
+        hidden.value = btn.getAttribute("data-value");
+        // Clear error
+        var err = group.closest(".convo-fields").querySelector(".convo-error");
+        if (err) err.classList.remove("visible");
+        // Callback
+        if (onSelect) onSelect(btn.getAttribute("data-value"));
+        // Auto-advance after a short delay for choice buttons
+        setTimeout(function () { goNext(); }, 350);
+      });
+    }
+
+    // File input handling
     if (fileInput && fileLabel && fileText) {
       fileInput.addEventListener("change", function () {
         if (this.files && this.files.length > 0) {
           fileText.textContent = this.files[0].name;
           fileLabel.classList.add("has-file");
+          var err = fileInput.closest(".convo-field").querySelector(".convo-error");
+          if (err) err.classList.remove("visible");
         } else {
-          fileText.textContent = "Choose file or drag here";
+          fileText.textContent = "Choose a file or drag it here";
           fileLabel.classList.remove("has-file");
         }
       });
+
+      // Drag and drop
+      if (fileArea) {
+        ["dragenter", "dragover"].forEach(function (evt) {
+          fileArea.addEventListener(evt, function (e) {
+            e.preventDefault();
+            fileArea.classList.add("drag-active");
+          });
+        });
+        ["dragleave", "drop"].forEach(function (evt) {
+          fileArea.addEventListener(evt, function (e) {
+            e.preventDefault();
+            fileArea.classList.remove("drag-active");
+          });
+        });
+      }
     }
 
-    form.querySelectorAll("input, select, textarea").forEach(function (input) {
-      input.addEventListener("input", function () {
-        clearFieldError(this);
-      });
-      input.addEventListener("change", function () {
-        clearFieldError(this);
+    // Clear errors on input
+    convoWrapper.querySelectorAll("input, select, textarea").forEach(function (el) {
+      el.addEventListener("input", function () {
+        el.classList.remove("error");
+        var err = el.closest(".convo-field, .convo-fields");
+        if (err) {
+          var errMsg = err.querySelector(".convo-error");
+          if (errMsg) errMsg.classList.remove("visible");
+        }
       });
     });
 
-    var isSubmitting = false;
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      if (isSubmitting) return;
+    // Navigation
+    btnNext.addEventListener("click", goNext);
+    btnBack.addEventListener("click", goBack);
 
-      var isValid = true;
+    // Keyboard: Enter to advance
+    document.addEventListener("keydown", function (e) {
+      // Only act if convo form is visible
+      if (convoWrapper.offsetParent === null) return;
+      if (formSuccess && !formSuccess.hidden) return;
 
-      var requiredInputs = ["firstName", "lastName", "email", "phone"];
-      requiredInputs.forEach(function (name) {
-        var input = document.getElementById(name);
-        if (!input || !input.value.trim()) {
-          showFieldError(input);
-          isValid = false;
-        } else if (name === "email" && !isValidEmail(input.value)) {
-          showFieldError(input);
-          isValid = false;
+      if (e.key === "Enter") {
+        var active = document.activeElement;
+        // Allow Shift+Enter for newlines in textareas
+        if (active && active.tagName === "TEXTAREA" && e.shiftKey) return;
+        // Don't intercept Enter in textareas without Shift
+        if (active && active.tagName === "TEXTAREA" && !e.shiftKey) {
+          e.preventDefault();
+          goNext();
+          return;
         }
-      });
+        // Prevent double-submission
+        if (active && active.tagName === "BUTTON") return;
+        e.preventDefault();
+        goNext();
+      }
+    });
 
-      var requiredSelects = ["state", "role", "experience"];
-      requiredSelects.forEach(function (name) {
-        var select = document.getElementById(name);
-        if (!select || !select.value) {
-          showFieldError(select);
-          isValid = false;
-        }
-      });
+    function getStepEl(n) {
+      return convoWrapper.querySelector('.convo-step[data-step="' + n + '"]');
+    }
 
-      var availabilityChecked = form.querySelector(
-        'input[name="availability"]:checked'
-      );
-      if (!availabilityChecked) {
-        var errorEl = document.getElementById("availability-error");
-        if (errorEl) errorEl.classList.add("visible");
-        isValid = false;
+    function updateUI() {
+      var activeSteps = getActiveSteps();
+      var idx = activeSteps.indexOf(currentStep);
+      var total = activeSteps.length;
+
+      progressBar.style.width = (((idx + 1) / total) * 100) + "%";
+      stepCount.textContent = (idx + 1) + " of " + total;
+      btnBack.hidden = currentStep === 1;
+
+      var isLast = currentStep === activeSteps[activeSteps.length - 1];
+      if (isLast) {
+        btnNext.innerHTML = 'Submit application <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.3 4L6 11.3 2.7 8"/></svg>';
+      } else {
+        btnNext.innerHTML = 'Continue <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>';
       }
 
-      if (!isValid) {
-        var firstError = form.querySelector(".error, .form-error.visible");
-        if (firstError) {
-          firstError.scrollIntoView({ behavior: "smooth", block: "center" });
+      // Show/hide enter hint for textarea steps
+      var stepEl = getStepEl(currentStep);
+      if (stepEl && stepEl.querySelector("textarea")) {
+        enterHint.innerHTML = 'Press <kbd>Enter</kbd> to continue';
+      } else {
+        enterHint.innerHTML = 'Press <kbd>Enter</kbd>';
+      }
+    }
+
+    function validateStep(n) {
+      var stepEl = getStepEl(n);
+      if (!stepEl) return true;
+      var valid = true;
+
+      // Check required inputs/selects/textareas
+      stepEl.querySelectorAll("[data-required]").forEach(function (el) {
+        var val = el.value ? el.value.trim() : "";
+        if (!val) {
+          el.classList.add("error");
+          var err = el.closest(".convo-field, .convo-fields");
+          if (err) {
+            var errMsg = err.querySelector(".convo-error");
+            if (errMsg) errMsg.classList.add("visible");
+          }
+          // Shake
+          el.classList.remove("shake");
+          void el.offsetWidth;
+          el.classList.add("shake");
+          valid = false;
         }
+        // Email validation
+        if (el.getAttribute("data-type") === "email" && val && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val)) {
+          el.classList.add("error");
+          var err2 = el.closest(".convo-field");
+          if (err2) {
+            var errMsg2 = err2.querySelector(".convo-error");
+            if (errMsg2) errMsg2.classList.add("visible");
+          }
+          valid = false;
+        }
+      });
+
+      // Check file input on resume step
+      if (n === LAST_STEP && fileInput) {
+        if (!fileInput.files || fileInput.files.length === 0) {
+          var err = fileInput.closest(".convo-field").querySelector(".convo-error");
+          if (err) err.classList.add("visible");
+          valid = false;
+        }
+      }
+
+      return valid;
+    }
+
+    function transitionStep(from, to, direction) {
+      var fromEl = getStepEl(from);
+      var toEl = getStepEl(to);
+      if (!fromEl || !toEl) return;
+
+      var exitClass = direction === "forward" ? "exiting-left" : "exiting-right";
+      var enterClass = direction === "forward" ? "active" : "entering-from-left";
+
+      fromEl.classList.remove("active", "entering-from-left");
+      fromEl.classList.add(exitClass);
+
+      setTimeout(function () {
+        fromEl.classList.remove(exitClass);
+        fromEl.style.display = "none";
+        toEl.style.display = "";
+        toEl.classList.remove("exiting-left", "exiting-right");
+        toEl.classList.add(enterClass);
+
+        // Focus first input
+        setTimeout(function () {
+          var firstInput = toEl.querySelector("input:not([type=hidden]):not([type=file]), select, textarea");
+          if (firstInput) firstInput.focus();
+        }, 100);
+      }, 280);
+    }
+
+    function getNextStep() {
+      var activeSteps = getActiveSteps();
+      var idx = activeSteps.indexOf(currentStep);
+      if (idx < activeSteps.length - 1) return activeSteps[idx + 1];
+      return null;
+    }
+
+    function getPrevStep() {
+      var activeSteps = getActiveSteps();
+      var idx = activeSteps.indexOf(currentStep);
+      if (idx > 0) return activeSteps[idx - 1];
+      return null;
+    }
+
+    function goNext() {
+      if (isSubmitting) return;
+
+      if (!validateStep(currentStep)) return;
+
+      var activeSteps = getActiveSteps();
+      var isLast = currentStep === activeSteps[activeSteps.length - 1];
+      if (isLast) {
+        submitForm();
         return;
       }
 
+      var prev = currentStep;
+      currentStep = getNextStep();
+      updateUI();
+      transitionStep(prev, currentStep, "forward");
+    }
+
+    function goBack() {
+      if (currentStep <= 1 || isSubmitting) return;
+      var prev = currentStep;
+      currentStep = getPrevStep();
+      updateUI();
+      transitionStep(prev, currentStep, "backward");
+    }
+
+    function submitForm() {
       isSubmitting = true;
-      var submitBtn = form.querySelector(".form-submit");
-      var submitBtnHTML = submitBtn ? submitBtn.innerHTML : "";
-      if (submitBtn) {
-        submitBtn.setAttribute("disabled", "true");
-        submitBtn.innerHTML = "Submitting\u2026";
-      }
+      btnNext.innerHTML = "Sending your application\u2026";
+      btnNext.classList.add("submitting");
+      btnNext.setAttribute("disabled", "true");
 
-      submitApplication().then(function () {
-        form.hidden = true;
-        formSuccess.hidden = false;
-        formSuccess.scrollIntoView({ behavior: "smooth", block: "start" });
-        showToast("Application submitted successfully!");
-      }).catch(function () {
-        showToast("Something went wrong. Please try again.");
-        isSubmitting = false;
-        if (submitBtn) {
-          submitBtn.removeAttribute("disabled");
-          submitBtn.innerHTML = submitBtnHTML;
-        }
-      });
-    });
-
-    function submitApplication() {
       var headers = {
         "apikey": SUPABASE_KEY,
         "Authorization": "Bearer " + SUPABASE_KEY
       };
 
-      // 1. Upload resume if provided
+      // Upload resume
       var resumePromise;
       if (fileInput && fileInput.files && fileInput.files.length > 0) {
         var file = fileInput.files[0];
@@ -372,18 +549,24 @@
         resumePromise = Promise.resolve(null);
       }
 
-      // 2. Insert application row
-      return resumePromise.then(function (resumeUrl) {
+      resumePromise.then(function (resumeUrl) {
         var data = {
-          first_name: document.getElementById("firstName").value.trim(),
-          last_name: document.getElementById("lastName").value.trim(),
-          email: document.getElementById("email").value.trim(),
-          phone: document.getElementById("phone").value.trim(),
-          state: document.getElementById("state").value,
-          role: document.getElementById("role").value,
-          experience: document.getElementById("experience").value,
-          availability: form.querySelector('input[name="availability"]:checked').value,
-          bio: document.getElementById("bio").value.trim() || null,
+          first_name: document.getElementById("cf-firstName").value.trim(),
+          last_name: document.getElementById("cf-lastName").value.trim(),
+          email: document.getElementById("cf-email").value.trim(),
+          phone: document.getElementById("cf-phone").value.trim(),
+          state: document.getElementById("cf-state").value,
+          role: document.getElementById("cf-role").value,
+          experience: document.getElementById("cf-experience").value,
+          availability: document.getElementById("cf-availability").value,
+          is_student: isStudent,
+          school_name: isStudent ? document.getElementById("cf-schoolName").value.trim() : null,
+          school_email: isStudent ? document.getElementById("cf-schoolEmail").value.trim() : null,
+          interest_spark: document.getElementById("cf-interest").value.trim(),
+          learning_approach: document.getElementById("cf-learning").value.trim(),
+          conflict_resolution: document.getElementById("cf-conflict").value.trim(),
+          work_style: document.getElementById("cf-workstyle").value.trim(),
+          additional_info: document.getElementById("cf-additional").value.trim() || null,
           resume_url: resumeUrl
         };
 
@@ -397,36 +580,36 @@
         }).then(function (res) {
           if (!res.ok) throw new Error("Insert failed");
         });
+      }).then(function () {
+        convoWrapper.hidden = true;
+        formSuccess.hidden = false;
+        formSuccess.scrollIntoView({ behavior: "smooth", block: "start" });
+        showToast("Application submitted successfully!");
+      }).catch(function () {
+        showToast("We couldn't submit your application. Check your connection and try again.");
+        isSubmitting = false;
+        btnNext.removeAttribute("disabled");
+        btnNext.classList.remove("submitting");
+        btnNext.innerHTML = 'Submit application <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M13.3 4L6 11.3 2.7 8"/></svg>';
       });
     }
-  }
 
-  function showFieldError(input) {
-    if (!input) return;
-    input.classList.remove("shake");
-    void input.offsetWidth;
-    input.classList.add("error", "shake");
-    input.setAttribute("aria-invalid", "true");
-    var errorEl = document.getElementById(input.id + "-error");
-    if (errorEl) errorEl.classList.add("visible");
-  }
-
-  function clearFieldError(input) {
-    if (!input) return;
-    input.classList.remove("error");
-    input.removeAttribute("aria-invalid");
-    var errorEl = document.getElementById(input.id + "-error");
-    if (errorEl) errorEl.classList.remove("visible");
-
-    if (input.name === "availability") {
-      var avErr = document.getElementById("availability-error");
-      if (avErr) avErr.classList.remove("visible");
+    // Initialize
+    updateUI();
+    // Focus first input on load if visible
+    var firstStep = getStepEl(1);
+    if (firstStep) {
+      var firstInput = firstStep.querySelector("input");
+      if (firstInput) {
+        setTimeout(function () {
+          if (firstStep.getBoundingClientRect().top < window.innerHeight) {
+            firstInput.focus();
+          }
+        }, 500);
+      }
     }
   }
 
-  function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
 
   /* ========================================
      TOAST NOTIFICATION

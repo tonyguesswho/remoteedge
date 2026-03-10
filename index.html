@@ -4,12 +4,12 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RemoteEdge — Your Edge to Remote Work | Get Paid to Work Remotely</title>
-  <meta name="description" content="RemoteEdge connects US-based workers with flexible, high-paying remote job opportunities. Apply for free, get matched to verified positions, and start earning from home.">
+  <meta name="description" content="RemoteEdge connects US-based workers and students with flexible, high-paying remote job opportunities. Apply in minutes, get matched to verified positions, and start earning from home.">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:title" content="RemoteEdge — Your Edge to Remote Work">
-  <meta property="og:description" content="Connect with flexible, high-paying remote job opportunities. Apply for free and start earning from home.">
+  <meta property="og:description" content="Connect with flexible, high-paying remote job opportunities. Apply in minutes and start earning from home.">
   <meta property="og:image" content="./assets/og-image.png">
   <meta property="og:url" content="https://remoteedge.com">
   <meta property="og:site_name" content="RemoteEdge">
@@ -17,7 +17,7 @@
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="RemoteEdge — Your Edge to Remote Work">
-  <meta name="twitter:description" content="Connect with flexible, high-paying remote job opportunities. Apply for free and start earning from home.">
+  <meta name="twitter:description" content="Connect with flexible, high-paying remote job opportunities. Apply in minutes and start earning from home.">
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
@@ -34,7 +34,7 @@
     "@type": "Organization",
     "name": "RemoteEdge",
     "url": "https://remoteedge.com",
-    "description": "RemoteEdge connects US-based workers with flexible, high-paying remote job opportunities.",
+    "description": "RemoteEdge connects US-based workers and students with flexible, high-paying remote job opportunities.",
     "sameAs": []
   }
   </script>
@@ -116,7 +116,7 @@
             <span>Now accepting applications</span>
           </div>
           <h1 class="hero-title hero-reveal">Get Paid to<br><em>Work Remotely</em></h1>
-          <p class="hero-subtitle hero-reveal">Join thousands of US-based workers earning great pay from home. Apply in minutes, get matched to verified opportunities, and start your remote career — completely free.</p>
+          <p class="hero-subtitle hero-reveal">Students and professionals alike — apply in minutes, get matched to verified remote opportunities, and start earning from home.</p>
           <div class="hero-actions hero-reveal">
             <a href="#apply" class="btn btn-primary btn-lg">
               Apply Now
@@ -127,7 +127,7 @@
           <div class="hero-trust hero-reveal">
             <div class="hero-trust-item">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M13.3 4L6 11.3 2.7 8"/></svg>
-              <span>100% free to join</span>
+              <span>Apply in under 5 min</span>
             </div>
             <div class="hero-trust-item">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M13.3 4L6 11.3 2.7 8"/></svg>
@@ -136,6 +136,10 @@
             <div class="hero-trust-item">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M13.3 4L6 11.3 2.7 8"/></svg>
               <span>Flexible hours</span>
+            </div>
+            <div class="hero-trust-item">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="var(--color-primary)" stroke-width="2"><path d="M13.3 4L6 11.3 2.7 8"/></svg>
+              <span>Student-friendly</span>
             </div>
           </div>
         </div>
@@ -291,13 +295,13 @@
         <div class="section-header fade-in">
           <p class="section-label">Simple Process</p>
           <h2 class="section-title">How It Works</h2>
-          <p class="section-subtitle">Start earning in three easy steps. No lengthy applications, no fees.</p>
+          <p class="section-subtitle">Start earning in three easy steps. No lengthy applications, no hassle.</p>
         </div>
         <div class="steps-grid">
           <div class="step-card fade-in">
             <div class="step-number">1</div>
             <h3 class="step-title">Apply in Minutes</h3>
-            <p class="step-desc">Fill out our quick application form with your skills and preferences. It takes under 5 minutes.</p>
+            <p class="step-desc">Answer a few quick questions about your skills and what you're looking for. Whether you're a student or a working professional, it takes under 5 minutes.</p>
           </div>
           <div class="step-connector fade-in" aria-hidden="true">
             <svg width="40" height="2" viewBox="0 0 40 2"><line x1="0" y1="1" x2="40" y2="1" stroke="var(--color-border)" stroke-width="2" stroke-dasharray="4 4"/></svg>
@@ -337,8 +341,8 @@
                 <path d="M8 12l3 3 5-6"/>
               </svg>
             </div>
-            <h3 class="why-title">Free to Join</h3>
-            <p class="why-desc">No fees, no subscriptions, no hidden costs. Apply and get matched at zero cost to you.</p>
+            <h3 class="why-title">Quick Application</h3>
+            <p class="why-desc">No cover letters, no long forms. Answer a few questions and we handle the matching for you.</p>
           </div>
           <div class="why-card fade-in" data-accent="blue">
             <div class="why-icon">
@@ -404,151 +408,311 @@
     </section>
 
     <!-- ========================================
-         APPLICATION FORM
+         APPLICATION FORM — Conversational Flow
          ======================================== -->
     <section class="section form-section" id="apply">
       <div class="container">
-        <div class="form-wrapper">
-          <div class="section-header fade-in">
-            <p class="section-label">Get Started</p>
-            <h2 class="section-title">Apply Now</h2>
-            <p class="section-subtitle">Takes under 5 minutes. We'll match you with roles within 2–3 business days.</p>
+        <div class="convo-wrapper" id="convo-wrapper">
+
+          <!-- Progress -->
+          <div class="convo-header">
+            <div class="convo-progress">
+              <div class="convo-progress-bar" id="convo-progress-bar"></div>
+            </div>
+            <span class="convo-step-count" id="convo-step-count">1 of 14</span>
           </div>
 
-          <form id="application-form" class="application-form fade-in" novalidate>
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="firstName">First Name <span class="required">*</span></label>
-                <input type="text" id="firstName" name="firstName" class="form-input" required placeholder="John" aria-describedby="firstName-error">
-                <span class="form-error" id="firstName-error" role="alert">Please enter your first name</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="lastName">Last Name <span class="required">*</span></label>
-                <input type="text" id="lastName" name="lastName" class="form-input" required placeholder="Doe" aria-describedby="lastName-error">
-                <span class="form-error" id="lastName-error" role="alert">Please enter your last name</span>
+          <!-- Steps -->
+          <div class="convo-body" id="convo-body">
+
+            <!-- Step 1: Name -->
+            <div class="convo-step active" data-step="1">
+              <p class="convo-label">Let's get started</p>
+              <h2 class="convo-question">What's your name?</h2>
+              <div class="convo-fields">
+                <div class="convo-field-row">
+                  <div class="convo-field">
+                    <input type="text" id="cf-firstName" class="convo-input" placeholder="First name" data-required aria-label="First name">
+                    <span class="convo-error">Please enter your first name</span>
+                  </div>
+                  <div class="convo-field">
+                    <input type="text" id="cf-lastName" class="convo-input" placeholder="Last name" data-required aria-label="Last name">
+                    <span class="convo-error">Please enter your last name</span>
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="email">Email Address <span class="required">*</span></label>
-                <input type="email" id="email" name="email" class="form-input" required placeholder="john@example.com" aria-describedby="email-error">
-                <span class="form-error" id="email-error" role="alert">Please enter a valid email address</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="phone">Phone Number <span class="required">*</span></label>
-                <input type="tel" id="phone" name="phone" class="form-input" required placeholder="(555) 123-4567" aria-describedby="phone-error">
-                <span class="form-error" id="phone-error" role="alert">Please enter your phone number</span>
-              </div>
-            </div>
-
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="state">State <span class="required">*</span></label>
-                <select id="state" name="state" class="form-select" required aria-describedby="state-error">
-                  <option value="">Select your state</option>
-                  <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option>
-                  <option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option>
-                  <option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option>
-                  <option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option>
-                  <option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option>
-                  <option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option>
-                  <option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option>
-                  <option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option>
-                  <option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option>
-                  <option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option>
-                  <option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option>
-                  <option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option>
-                  <option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option>
-                  <option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option>
-                  <option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option>
-                  <option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option>
-                  <option value="WI">Wisconsin</option><option value="WY">Wyoming</option><option value="DC">District of Columbia</option>
-                </select>
-                <span class="form-error" id="state-error" role="alert">Please select your state</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label" for="role">Preferred Role <span class="required">*</span></label>
-                <select id="role" name="role" class="form-select" required aria-describedby="role-error">
-                  <option value="">Select a role</option>
-                  <option value="ai-training">AI Training & Data Annotation</option>
-                  <option value="virtual-assistant">Virtual Assistant</option>
-                  <option value="customer-support">Customer Support</option>
-                  <option value="content-writing">Content & Writing</option>
-                  <option value="sales-marketing">Sales & Marketing</option>
-                  <option value="data-entry">Data Entry & Research</option>
-                  <option value="open">Open to Any</option>
-                </select>
-                <span class="form-error" id="role-error" role="alert">Please select a preferred role</span>
+            <!-- Step 2: Email -->
+            <div class="convo-step" data-step="2">
+              <p class="convo-label">Contact info</p>
+              <h2 class="convo-question">What's your email address?</h2>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <input type="email" id="cf-email" class="convo-input" placeholder="you@example.com" data-required data-type="email" aria-label="Email address">
+                  <span class="convo-error">Please enter a valid email address</span>
+                </div>
               </div>
             </div>
 
-            <div class="form-row">
-              <div class="form-group">
-                <label class="form-label" for="experience">Experience Level <span class="required">*</span></label>
-                <select id="experience" name="experience" class="form-select" required aria-describedby="experience-error">
-                  <option value="">Select experience level</option>
-                  <option value="none">No Experience</option>
-                  <option value="1-2">1–2 Years</option>
-                  <option value="3-5">3–5 Years</option>
-                  <option value="5+">5+ Years</option>
-                </select>
-                <span class="form-error" id="experience-error" role="alert">Please select your experience level</span>
-              </div>
-              <div class="form-group">
-                <label class="form-label">Availability <span class="required">*</span></label>
-                <fieldset class="radio-group">
-                  <legend class="sr-only">Select your availability</legend>
-                  <label class="radio-label">
-                    <input type="radio" name="availability" value="part-time" required>
-                    Part-time
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="availability" value="full-time">
-                    Full-time
-                  </label>
-                  <label class="radio-label">
-                    <input type="radio" name="availability" value="either">
-                    Either
-                  </label>
-                </fieldset>
-                <span class="form-error" id="availability-error" role="alert">Please select your availability</span>
+            <!-- Step 3: Student? -->
+            <div class="convo-step" data-step="3">
+              <p class="convo-label">About you</p>
+              <h2 class="convo-question">Are you currently a student?</h2>
+              <div class="convo-fields">
+                <div class="convo-choices" id="cf-student-choices">
+                  <button type="button" class="convo-choice" data-value="yes">Yes, I'm a student</button>
+                  <button type="button" class="convo-choice" data-value="no">No, I'm not a student</button>
+                </div>
+                <input type="hidden" id="cf-student" data-required>
+                <span class="convo-error">Please let us know</span>
               </div>
             </div>
 
-            <div class="form-group">
-              <label class="form-label" for="bio">Skills & Experience <span class="optional">(optional)</span></label>
-              <textarea id="bio" name="bio" class="form-textarea" rows="3" placeholder="Tell us about your skills, experience, and what you're looking for..."></textarea>
-            </div>
-
-            <div class="form-group">
-              <label class="form-label" for="resume">Resume <span class="optional">(optional)</span></label>
-              <div class="file-upload">
-                <input type="file" id="resume" name="resume" accept=".pdf,.doc,.docx" class="file-input">
-                <label for="resume" class="file-label">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 3v10M6 7l4-4 4 4"/><path d="M3 13v3a1 1 0 001 1h12a1 1 0 001-1v-3"/></svg>
-                  <span class="file-text">Choose file or drag here</span>
-                </label>
+            <!-- Step 4: School details (conditional — shown only if student) -->
+            <div class="convo-step" data-step="4" data-conditional="student">
+              <p class="convo-label">Student info</p>
+              <h2 class="convo-question">Where do you go to school?</h2>
+              <p class="convo-subtext">We'll use your school email to confirm you're a student.</p>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <input type="text" id="cf-schoolName" class="convo-input" placeholder="e.g. University of Texas at Austin" data-required aria-label="School name">
+                  <span class="convo-error">Please enter your school name</span>
+                </div>
+                <div class="convo-field" style="margin-top: var(--space-4)">
+                  <input type="email" id="cf-schoolEmail" class="convo-input" placeholder="you@university.edu" data-required data-type="email" aria-label="School email address">
+                  <span class="convo-error">Please enter a valid school email address</span>
+                </div>
               </div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-lg form-submit">
-              Submit Application
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+            <!-- Step 5: Phone -->
+            <div class="convo-step" data-step="5">
+              <p class="convo-label">Contact info</p>
+              <h2 class="convo-question">What's your phone number?</h2>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <input type="tel" id="cf-phone" class="convo-input" placeholder="(555) 123-4567" data-required aria-label="Phone number">
+                  <span class="convo-error">Please enter your phone number</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 6: State -->
+            <div class="convo-step" data-step="6">
+              <p class="convo-label">Location</p>
+              <h2 class="convo-question">Which state are you based in?</h2>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <select id="cf-state" class="convo-select" data-required aria-label="State">
+                    <option value="">Select your state</option>
+                    <option value="AL">Alabama</option><option value="AK">Alaska</option><option value="AZ">Arizona</option>
+                    <option value="AR">Arkansas</option><option value="CA">California</option><option value="CO">Colorado</option>
+                    <option value="CT">Connecticut</option><option value="DE">Delaware</option><option value="FL">Florida</option>
+                    <option value="GA">Georgia</option><option value="HI">Hawaii</option><option value="ID">Idaho</option>
+                    <option value="IL">Illinois</option><option value="IN">Indiana</option><option value="IA">Iowa</option>
+                    <option value="KS">Kansas</option><option value="KY">Kentucky</option><option value="LA">Louisiana</option>
+                    <option value="ME">Maine</option><option value="MD">Maryland</option><option value="MA">Massachusetts</option>
+                    <option value="MI">Michigan</option><option value="MN">Minnesota</option><option value="MS">Mississippi</option>
+                    <option value="MO">Missouri</option><option value="MT">Montana</option><option value="NE">Nebraska</option>
+                    <option value="NV">Nevada</option><option value="NH">New Hampshire</option><option value="NJ">New Jersey</option>
+                    <option value="NM">New Mexico</option><option value="NY">New York</option><option value="NC">North Carolina</option>
+                    <option value="ND">North Dakota</option><option value="OH">Ohio</option><option value="OK">Oklahoma</option>
+                    <option value="OR">Oregon</option><option value="PA">Pennsylvania</option><option value="RI">Rhode Island</option>
+                    <option value="SC">South Carolina</option><option value="SD">South Dakota</option><option value="TN">Tennessee</option>
+                    <option value="TX">Texas</option><option value="UT">Utah</option><option value="VT">Vermont</option>
+                    <option value="VA">Virginia</option><option value="WA">Washington</option><option value="WV">West Virginia</option>
+                    <option value="WI">Wisconsin</option><option value="WY">Wyoming</option><option value="DC">District of Columbia</option>
+                  </select>
+                  <span class="convo-error">Please select your state</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 7: Role -->
+            <div class="convo-step" data-step="7">
+              <p class="convo-label">Your interests</p>
+              <h2 class="convo-question">What type of role interests you most?</h2>
+              <div class="convo-fields">
+                <div class="convo-choices" id="cf-role-choices">
+                  <button type="button" class="convo-choice" data-value="ai-training">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="14" cy="14" r="11"/><circle cx="14" cy="14" r="5"/><circle cx="14" cy="14" r="1.5" fill="currentColor"/></svg>
+                    AI Training & Data
+                  </button>
+                  <button type="button" class="convo-choice" data-value="virtual-assistant">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="6" width="20" height="16" rx="3"/><path d="M4 11h20"/></svg>
+                    Virtual Assistant
+                  </button>
+                  <button type="button" class="convo-choice" data-value="customer-support">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 18c2-1 4-3.5 4-7 0-5-4.5-7-10-7S4 6 4 11c0 3.5 2 6 4 7v4l4-3h4"/></svg>
+                    Customer Support
+                  </button>
+                  <button type="button" class="convo-choice" data-value="content-writing">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 24l2-6L20 5l3 3L10 21z"/><path d="M17 8l3 3"/></svg>
+                    Content & Writing
+                  </button>
+                  <button type="button" class="convo-choice" data-value="sales-marketing">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 22V14l5-4 5 6 5-8 5 4v10z"/></svg>
+                    Sales & Marketing
+                  </button>
+                  <button type="button" class="convo-choice" data-value="data-entry">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="20" height="20" rx="3"/><path d="M4 10h20M10 10v14"/></svg>
+                    Data Entry & Research
+                  </button>
+                  <button type="button" class="convo-choice" data-value="open">
+                    <svg width="22" height="22" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="14" cy="14" r="11"/><path d="M8 14h12M14 8v12"/></svg>
+                    Open to Anything
+                  </button>
+                </div>
+                <input type="hidden" id="cf-role" data-required>
+                <span class="convo-error">Please select a role</span>
+              </div>
+            </div>
+
+            <!-- Step 8: Experience -->
+            <div class="convo-step" data-step="8">
+              <p class="convo-label">Background</p>
+              <h2 class="convo-question">How much work experience do you have?</h2>
+              <div class="convo-fields">
+                <div class="convo-choices" id="cf-experience-choices">
+                  <button type="button" class="convo-choice" data-value="none">Just getting started</button>
+                  <button type="button" class="convo-choice" data-value="1-2">1-2 years</button>
+                  <button type="button" class="convo-choice" data-value="3-5">3-5 years</button>
+                  <button type="button" class="convo-choice" data-value="5+">5+ years</button>
+                </div>
+                <input type="hidden" id="cf-experience" data-required>
+                <span class="convo-error">Please select your experience level</span>
+              </div>
+            </div>
+
+            <!-- Step 9: Availability -->
+            <div class="convo-step" data-step="9">
+              <p class="convo-label">Availability</p>
+              <h2 class="convo-question">Are you looking for part-time or full-time?</h2>
+              <div class="convo-fields">
+                <div class="convo-choices" id="cf-availability-choices">
+                  <button type="button" class="convo-choice" data-value="part-time">Part-time</button>
+                  <button type="button" class="convo-choice" data-value="full-time">Full-time</button>
+                  <button type="button" class="convo-choice" data-value="either">I'm flexible</button>
+                </div>
+                <input type="hidden" id="cf-availability" data-required>
+                <span class="convo-error">Please select your availability</span>
+              </div>
+            </div>
+
+            <!-- Step 10: Interest -->
+            <div class="convo-step" data-step="10">
+              <p class="convo-label">Getting to know you</p>
+              <h2 class="convo-question">What initially sparked your interest in remote work?</h2>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <textarea id="cf-interest" class="convo-textarea" rows="4" placeholder="Maybe it was flexibility, a specific goal, or something else entirely..." data-required aria-label="Interest in remote work"></textarea>
+                  <span class="convo-error">We'd love to hear your thoughts — even a sentence or two helps</span>
+                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 11: Learning -->
+            <div class="convo-step" data-step="11">
+              <p class="convo-label">Your perspective</p>
+              <h2 class="convo-question">How do you usually approach learning something completely new?</h2>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <textarea id="cf-learning" class="convo-textarea" rows="4" placeholder="Do you watch tutorials, jump right in, ask others for help?" data-required aria-label="Learning approach"></textarea>
+                  <span class="convo-error">We'd love to hear your thoughts — even a sentence or two helps</span>
+                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 12: Conflict -->
+            <div class="convo-step" data-step="12">
+              <p class="convo-label">Working with others</p>
+              <h2 class="convo-question">Tell us about a time you had a disagreement at work or school &mdash; how did you handle it?</h2>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <textarea id="cf-conflict" class="convo-textarea" rows="4" placeholder="It doesn't have to be a big deal — even small disagreements count." data-required aria-label="Conflict resolution"></textarea>
+                  <span class="convo-error">We'd love to hear an example — even a brief one</span>
+                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 13: Work style -->
+            <div class="convo-step" data-step="13">
+              <p class="convo-label">Work style</p>
+              <h2 class="convo-question">Do you prefer working independently or collaboratively? Why?</h2>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <textarea id="cf-workstyle" class="convo-textarea" rows="4" placeholder="A few sentences about how you like to work day-to-day..." data-required aria-label="Work style preference"></textarea>
+                  <span class="convo-error">We'd love to hear your thoughts — even a sentence or two helps</span>
+                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 14: Anything else (skippable) -->
+            <div class="convo-step" data-step="14">
+              <p class="convo-label">Almost done</p>
+              <h2 class="convo-question">Is there anything else about your experience you'd like us to know?</h2>
+              <p class="convo-subtext">This one's optional — skip it if you'd like.</p>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <textarea id="cf-additional" class="convo-textarea" rows="4" placeholder="Anything else you want to share..." aria-label="Additional info"></textarea>
+                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 15: Resume -->
+            <div class="convo-step" data-step="15">
+              <p class="convo-label">Last step</p>
+              <h2 class="convo-question">Now, let's add your resume.</h2>
+              <p class="convo-subtext">We accept PDF, DOC, or DOCX. This helps us match you to the right roles faster.</p>
+              <div class="convo-fields">
+                <div class="convo-field">
+                  <div class="convo-file-upload" id="convo-file-area">
+                    <input type="file" id="cf-resume" accept=".pdf,.doc,.docx" class="convo-file-input" data-required aria-label="Resume upload">
+                    <label for="cf-resume" class="convo-file-label" id="convo-file-label">
+                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4v18M10 10l6-6 6 6"/><path d="M4 22v4a2 2 0 002 2h20a2 2 0 002-2v-4"/></svg>
+                      <span class="convo-file-text" id="convo-file-text">Choose a file or drag it here</span>
+                      <span class="convo-file-formats">PDF, DOC, DOCX</span>
+                    </label>
+                  </div>
+                  <span class="convo-error">Please upload your resume</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Navigation -->
+          <div class="convo-footer">
+            <button type="button" class="convo-btn-back" id="convo-back" aria-label="Previous question" hidden>
+              <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 12L6 8l4-4"/></svg>
             </button>
-          </form>
-
-          <!-- Success message -->
-          <div id="form-success" class="form-success" hidden>
-            <div class="form-success-inner">
-              <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                <circle cx="24" cy="24" r="22" stroke="var(--color-primary)" stroke-width="2"/>
-                <path d="M15 24l6 6 12-14" stroke="var(--color-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <h3 class="form-success-title">Application Submitted!</h3>
-              <p class="form-success-desc">Thank you for applying to RemoteEdge. Our team will review your application and reach out within 2–3 business days with matching opportunities.</p>
-              <p class="form-success-note">Check your email for a confirmation message.</p>
+            <div class="convo-footer-right">
+              <span class="convo-enter-hint" id="convo-enter-hint">Press <kbd>Enter</kbd></span>
+              <button type="button" class="btn btn-primary convo-btn-next" id="convo-next">
+                Continue
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+              </button>
             </div>
+          </div>
+
+        </div>
+
+        <!-- Success message -->
+        <div id="form-success" class="form-success" hidden>
+          <div class="form-success-inner">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+              <circle cx="24" cy="24" r="22" stroke="var(--color-primary)" stroke-width="2"/>
+              <path d="M15 24l6 6 12-14" stroke="var(--color-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <h3 class="form-success-title">You're all set!</h3>
+            <p class="form-success-desc">Your application is in. Our team will review it and reach out within 2-3 business days with roles that match your profile.</p>
+            <p class="form-success-note">Keep an eye on your inbox — that's where we'll contact you.</p>
           </div>
         </div>
       </div>
@@ -566,11 +730,11 @@
         <div class="faq-list">
           <details class="faq-item fade-in">
             <summary class="faq-question">
-              <span>Is it really free to join?</span>
+              <span>How does RemoteEdge make money?</span>
               <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7.5l5 5 5-5"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>Yes, 100%. RemoteEdge never charges workers any fees. We're compensated by the companies when we successfully match them with qualified candidates. You'll never be asked for payment information.</p>
+              <p>We're compensated by the companies when we successfully match them with qualified candidates. You'll never be charged or asked for payment information — our service is completely on the employer side.</p>
             </div>
           </details>
 
@@ -600,7 +764,7 @@
               <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7.5l5 5 5-5"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>Not necessarily. While some roles require specific skills, many of our positions are open to beginners. We have entry-level roles like data entry and basic customer support that welcome people new to remote work. Just be honest about your experience level in your application.</p>
+              <p>Not necessarily. Many of our positions are open to beginners, including students. We have entry-level roles like data entry, customer support, and AI training that don't require prior experience. Just be honest about your background in your application — we'll match you to roles that fit.</p>
             </div>
           </details>
 
@@ -610,7 +774,17 @@
               <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7.5l5 5 5-5"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>Once you're matched with a position, we'll send you a link to complete identity verification (KYC) through a secure third-party platform. This is a standard industry practice to protect both you and the employer. The process typically takes 10–15 minutes.</p>
+              <p>Once you're matched with a position, we'll send you a link to verify your identity through a secure third-party platform. This is standard practice to protect both you and the employer. The process typically takes 10-15 minutes.</p>
+            </div>
+          </details>
+
+          <details class="faq-item fade-in">
+            <summary class="faq-question">
+              <span>I'm a student — can I still apply?</span>
+              <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7.5l5 5 5-5"/></svg>
+            </summary>
+            <div class="faq-answer">
+              <p>Absolutely. Many of our roles are a great fit for students — especially part-time positions in data entry, AI training, and customer support. You can work around your class schedule and build real professional experience. During the application, we'll ask for your school name and email to confirm you're a student.</p>
             </div>
           </details>
 
@@ -620,7 +794,7 @@
               <svg class="faq-chevron" width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 7.5l5 5 5-5"/></svg>
             </summary>
             <div class="faq-answer">
-              <p>Absolutely. Many of our positions offer flexible, part-time schedules. You can indicate your availability preference in your application. Whether you're looking for a few hours a week or a full-time commitment, we have options for you.</p>
+              <p>Yes. Many of our positions offer flexible, part-time schedules — perfect for students or anyone balancing other commitments. You can indicate your availability preference in your application. Whether you're looking for a few hours a week or a full-time commitment, we have options for you.</p>
             </div>
           </details>
         </div>

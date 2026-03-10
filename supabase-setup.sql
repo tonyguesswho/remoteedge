@@ -12,8 +12,15 @@ CREATE TABLE applications (
   role text NOT NULL,
   experience text NOT NULL,
   availability text NOT NULL,
-  bio text,
-  resume_url text
+  is_student boolean NOT NULL DEFAULT false,
+  school_name text,
+  school_email text,
+  interest_spark text NOT NULL,
+  learning_approach text NOT NULL,
+  conflict_resolution text NOT NULL,
+  work_style text NOT NULL,
+  additional_info text,
+  resume_url text NOT NULL
 );
 
 -- 2. Enable Row Level Security

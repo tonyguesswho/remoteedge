@@ -854,7 +854,7 @@
 }
 
 /* ========================================
-   APPLICATION FORM
+   APPLICATION FORM — Conversational Flow
    ======================================== */
 
 .form-section {
@@ -862,140 +862,447 @@
   position: relative;
 }
 
-.form-wrapper {
-  max-width: 720px;
+.convo-wrapper {
+  max-width: 680px;
   margin-inline: auto;
-}
-
-.application-form {
+  min-height: 520px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-6);
   background: var(--color-bg);
-  padding: clamp(var(--space-6), 4vw, var(--space-10));
   border-radius: var(--radius-2xl);
   border: 1px solid var(--color-divider);
   box-shadow: var(--shadow-lg);
+  overflow: hidden;
 }
 
-.form-row {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: var(--space-6);
-}
-
-@media (min-width: 640px) {
-  .form-row {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-
-.required {
-  color: var(--color-accent);
-}
-
-.optional {
-  color: var(--color-text-faint);
-  font-weight: 400;
-}
-
-.form-textarea {
-  resize: vertical;
-  min-height: 80px;
-}
-
-/* Radio buttons */
-.radio-group {
-  border: none;
-  display: flex;
-  gap: var(--space-4);
-  flex-wrap: wrap;
-  padding: 0;
-}
-
-.radio-label {
+/* ---- Header / Progress ---- */
+.convo-header {
+  padding: var(--space-5) var(--space-8) 0;
   display: flex;
   align-items: center;
-  gap: var(--space-2);
-  font-size: var(--text-sm);
-  cursor: pointer;
-  color: var(--color-text);
+  gap: var(--space-4);
 }
 
-.radio-label input[type="radio"] {
-  appearance: none;
-  -webkit-appearance: none;
-  width: 20px;
-  height: 20px;
-  border: 2px solid var(--color-border);
+.convo-progress {
+  flex: 1;
+  height: 4px;
+  background: var(--color-surface);
   border-radius: var(--radius-full);
-  transition: border-color var(--transition-interactive),
-              background-color var(--transition-interactive),
-              box-shadow var(--transition-interactive);
-  cursor: pointer;
+  overflow: hidden;
+}
+
+.convo-progress-bar {
+  height: 100%;
+  width: 7.7%;
+  background: var(--color-primary);
+  border-radius: var(--radius-full);
+  transition: width 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.convo-step-count {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  color: var(--color-text-faint);
+  white-space: nowrap;
+  letter-spacing: 0.04em;
+}
+
+/* ---- Body ---- */
+.convo-body {
+  flex: 1;
+  padding: var(--space-10) var(--space-8) var(--space-6);
+  position: relative;
+  overflow: hidden;
+}
+
+/* ---- Steps ---- */
+.convo-step {
+  display: none;
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.convo-step.active {
+  display: block;
+  animation: convo-step-in 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.convo-step.exiting-left {
+  display: block;
+  animation: convo-step-out-left 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.convo-step.exiting-right {
+  display: block;
+  animation: convo-step-out-right 0.3s cubic-bezier(0.7, 0, 0.84, 0) forwards;
+}
+
+.convo-step.entering-from-left {
+  display: block;
+  animation: convo-step-in-from-left 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes convo-step-in {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes convo-step-out-left {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-40px); }
+}
+
+@keyframes convo-step-out-right {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(40px); }
+}
+
+@keyframes convo-step-in-from-left {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.convo-label {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-accent);
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.convo-label::before {
+  content: '';
+  width: 24px;
+  height: 1.5px;
+  background: var(--color-accent);
   flex-shrink: 0;
 }
 
-.radio-label input[type="radio"]:checked {
+.convo-question {
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--color-text);
+  margin-bottom: var(--space-3);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.convo-subtext {
+  font-size: var(--text-sm);
+  color: var(--color-text-faint);
+  margin-bottom: var(--space-2);
+}
+
+.convo-fields {
+  margin-top: var(--space-6);
+}
+
+.convo-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.convo-field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+}
+
+@media (max-width: 480px) {
+  .convo-field-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---- Inputs ---- */
+.convo-input,
+.convo-select {
+  font-family: var(--font-body);
+  font-size: var(--text-lg);
+  padding: var(--space-4) var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  color: var(--color-text);
+  transition: border-color var(--transition-interactive),
+              box-shadow var(--transition-interactive);
+  width: 100%;
+}
+
+.convo-input:focus,
+.convo-select:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-highlight);
+}
+
+.convo-input.error,
+.convo-select.error {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 4px var(--color-error-highlight);
+}
+
+.convo-textarea {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  padding: var(--space-4) var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg);
+  color: var(--color-text);
+  resize: vertical;
+  min-height: 120px;
+  width: 100%;
+  transition: border-color var(--transition-interactive),
+              box-shadow var(--transition-interactive);
+}
+
+.convo-textarea:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px var(--color-primary-highlight);
+}
+
+.convo-textarea.error {
+  border-color: var(--color-error);
+  box-shadow: 0 0 0 4px var(--color-error-highlight);
+}
+
+.convo-textarea-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+  margin-top: var(--space-1);
+}
+
+.convo-error {
+  font-size: var(--text-xs);
+  color: var(--color-error);
+  display: none;
+}
+
+.convo-error.visible {
+  display: block;
+}
+
+/* ---- Choice buttons ---- */
+.convo-choices {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+
+.convo-choice {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-full);
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--transition-interactive),
+              background-color var(--transition-interactive),
+              color var(--transition-interactive),
+              transform var(--transition-interactive),
+              box-shadow var(--transition-interactive);
+}
+
+.convo-choice svg {
+  display: inline;
+  flex-shrink: 0;
+}
+
+.convo-choice:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.convo-choice.selected {
   border-color: var(--color-primary);
   background: var(--color-primary);
-  box-shadow: inset 0 0 0 3px var(--color-bg);
+  color: var(--color-text-inverse);
+  box-shadow: 0 4px 16px color-mix(in srgb, var(--color-primary) 30%, transparent);
 }
 
-.radio-label input[type="radio"]:focus-visible {
-  outline: 2px solid var(--color-primary);
-  outline-offset: 2px;
+.convo-choice.selected svg {
+  stroke: var(--color-text-inverse);
 }
 
-/* File upload */
-.file-upload {
+/* ---- File upload ---- */
+.convo-file-upload {
   position: relative;
 }
 
-.file-input {
+.convo-file-input {
   position: absolute;
   opacity: 0;
   width: 100%;
   height: 100%;
   cursor: pointer;
+  z-index: 2;
 }
 
-.file-label {
+.convo-file-label {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-2);
-  padding: var(--space-5);
+  gap: var(--space-3);
+  padding: var(--space-10) var(--space-6);
   border: 2px dashed var(--color-border);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   color: var(--color-text-muted);
-  font-size: var(--text-sm);
   cursor: pointer;
   transition: border-color var(--transition-interactive),
               color var(--transition-interactive),
               background-color var(--transition-interactive);
 }
 
-.file-label svg {
+.convo-file-label svg {
   display: inline;
+  opacity: 0.5;
+  transition: opacity var(--transition-interactive),
+              transform var(--transition-interactive);
 }
 
-.file-label:hover {
+.convo-file-label:hover {
   border-color: var(--color-primary);
   color: var(--color-primary);
   background: var(--color-primary-highlight);
 }
 
-.file-label.has-file {
+.convo-file-label:hover svg {
+  opacity: 1;
+  transform: translateY(-3px);
+}
+
+.convo-file-label.has-file {
   border-color: var(--color-primary);
   color: var(--color-primary);
   background: var(--color-primary-highlight);
   border-style: solid;
 }
 
-.form-submit {
-  align-self: flex-start;
-  margin-top: var(--space-2);
+.convo-file-label.has-file svg {
+  opacity: 1;
+}
+
+.convo-file-text {
+  font-size: var(--text-base);
+  font-weight: 500;
+}
+
+.convo-file-formats {
+  font-size: var(--text-xs);
+  opacity: 0.6;
+  font-weight: 400;
+}
+
+/* Drag active state */
+.convo-file-upload.drag-active .convo-file-label {
+  border-color: var(--color-primary);
+  background: var(--color-primary-highlight);
+  color: var(--color-primary);
+}
+
+/* ---- Footer / Nav ---- */
+.convo-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-5) var(--space-8) var(--space-6);
+  border-top: 1px solid var(--color-divider);
+}
+
+.convo-btn-back {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-full);
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border);
+  transition: color var(--transition-interactive),
+              border-color var(--transition-interactive),
+              background-color var(--transition-interactive),
+              transform var(--transition-interactive);
+}
+
+.convo-btn-back:hover {
+  color: var(--color-text);
+  border-color: var(--color-text-faint);
+  background: var(--color-surface);
+  transform: translateX(-2px);
+}
+
+.convo-btn-back svg {
+  display: inline;
+}
+
+.convo-footer-right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-left: auto;
+}
+
+.convo-enter-hint {
+  font-size: var(--text-xs);
+  color: var(--color-text-faint);
+}
+
+.convo-enter-hint kbd {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  background: var(--color-surface);
+  box-shadow: 0 1px 0 var(--color-border);
+}
+
+.convo-btn-next {
+  min-width: 140px;
+}
+
+.convo-btn-next.submitting {
+  pointer-events: none;
+}
+
+@media (max-width: 480px) {
+  .convo-header {
+    padding: var(--space-4) var(--space-5) 0;
+  }
+  .convo-body {
+    padding: var(--space-8) var(--space-5) var(--space-4);
+  }
+  .convo-footer {
+    padding: var(--space-4) var(--space-5) var(--space-5);
+  }
+  .convo-enter-hint {
+    display: none;
+  }
+  .convo-question {
+    font-size: var(--text-lg);
+  }
 }
 
 /* Success message */
