@@ -387,7 +387,7 @@
             <div class="convo-progress">
               <div class="convo-progress-bar" id="convo-progress-bar"></div>
             </div>
-            <span class="convo-step-count" id="convo-step-count">1 of 14</span>
+            <span class="convo-step-count" id="convo-step-count">1 of 6</span>
           </div>
 
           <!-- Steps -->
@@ -537,121 +537,6 @@
               </div>
             </div>
 
-            <!-- Step 8: Experience -->
-            <div class="convo-step" data-step="8">
-              <p class="convo-label">Background</p>
-              <h2 class="convo-question">How much work experience do you have?</h2>
-              <div class="convo-fields">
-                <div class="convo-choices" id="cf-experience-choices">
-                  <button type="button" class="convo-choice" data-value="none">Just getting started</button>
-                  <button type="button" class="convo-choice" data-value="1-2">1-2 years</button>
-                  <button type="button" class="convo-choice" data-value="3-5">3-5 years</button>
-                  <button type="button" class="convo-choice" data-value="5+">5+ years</button>
-                </div>
-                <input type="hidden" id="cf-experience" data-required>
-                <span class="convo-error">Please select your experience level</span>
-              </div>
-            </div>
-
-            <!-- Step 9: Availability -->
-            <div class="convo-step" data-step="9">
-              <p class="convo-label">Availability</p>
-              <h2 class="convo-question">Are you looking for part-time or full-time?</h2>
-              <div class="convo-fields">
-                <div class="convo-choices" id="cf-availability-choices">
-                  <button type="button" class="convo-choice" data-value="part-time">Part-time</button>
-                  <button type="button" class="convo-choice" data-value="full-time">Full-time</button>
-                  <button type="button" class="convo-choice" data-value="either">I'm flexible</button>
-                </div>
-                <input type="hidden" id="cf-availability" data-required>
-                <span class="convo-error">Please select your availability</span>
-              </div>
-            </div>
-
-            <!-- Step 10: Interest -->
-            <div class="convo-step" data-step="10">
-              <p class="convo-label">Getting to know you</p>
-              <h2 class="convo-question">What initially sparked your interest in remote work?</h2>
-              <div class="convo-fields">
-                <div class="convo-field">
-                  <textarea id="cf-interest" class="convo-textarea" rows="4" placeholder="Maybe it was flexibility, a specific goal, or something else entirely..." data-required aria-label="Interest in remote work"></textarea>
-                  <span class="convo-error">We'd love to hear your thoughts — even a sentence or two helps</span>
-                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Step 11: Learning -->
-            <div class="convo-step" data-step="11">
-              <p class="convo-label">Your perspective</p>
-              <h2 class="convo-question">How do you usually approach learning something completely new?</h2>
-              <div class="convo-fields">
-                <div class="convo-field">
-                  <textarea id="cf-learning" class="convo-textarea" rows="4" placeholder="Do you watch tutorials, jump right in, ask others for help?" data-required aria-label="Learning approach"></textarea>
-                  <span class="convo-error">We'd love to hear your thoughts — even a sentence or two helps</span>
-                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Step 12: Conflict -->
-            <div class="convo-step" data-step="12">
-              <p class="convo-label">Working with others</p>
-              <h2 class="convo-question">Tell us about a time you had a disagreement at work or school &mdash; how did you handle it?</h2>
-              <div class="convo-fields">
-                <div class="convo-field">
-                  <textarea id="cf-conflict" class="convo-textarea" rows="4" placeholder="It doesn't have to be a big deal — even small disagreements count." data-required aria-label="Conflict resolution"></textarea>
-                  <span class="convo-error">We'd love to hear an example — even a brief one</span>
-                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Step 13: Work style -->
-            <div class="convo-step" data-step="13">
-              <p class="convo-label">Work style</p>
-              <h2 class="convo-question">Do you prefer working independently or collaboratively? Why?</h2>
-              <div class="convo-fields">
-                <div class="convo-field">
-                  <textarea id="cf-workstyle" class="convo-textarea" rows="4" placeholder="A few sentences about how you like to work day-to-day..." data-required aria-label="Work style preference"></textarea>
-                  <span class="convo-error">We'd love to hear your thoughts — even a sentence or two helps</span>
-                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Step 14: Anything else (skippable) -->
-            <div class="convo-step" data-step="14">
-              <p class="convo-label">Almost done</p>
-              <h2 class="convo-question">Is there anything else about your experience you'd like us to know?</h2>
-              <p class="convo-subtext">This one's optional — skip it if you'd like.</p>
-              <div class="convo-fields">
-                <div class="convo-field">
-                  <textarea id="cf-additional" class="convo-textarea" rows="4" placeholder="Anything else you want to share..." aria-label="Additional info"></textarea>
-                  <span class="convo-textarea-hint">Shift + Enter for a new line</span>
-                </div>
-              </div>
-            </div>
-
-            <!-- Step 15: Resume -->
-            <div class="convo-step" data-step="15">
-              <p class="convo-label">Last step</p>
-              <h2 class="convo-question">Now, let's add your resume.</h2>
-              <p class="convo-subtext">We accept PDF, DOC, or DOCX. This helps us match you to the right roles faster.</p>
-              <div class="convo-fields">
-                <div class="convo-field">
-                  <div class="convo-file-upload" id="convo-file-area">
-                    <input type="file" id="cf-resume" accept=".pdf,.doc,.docx" class="convo-file-input" data-required aria-label="Resume upload">
-                    <label for="cf-resume" class="convo-file-label" id="convo-file-label">
-                      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M16 4v18M10 10l6-6 6 6"/><path d="M4 22v4a2 2 0 002 2h20a2 2 0 002-2v-4"/></svg>
-                      <span class="convo-file-text" id="convo-file-text">Choose a file or drag it here</span>
-                      <span class="convo-file-formats">PDF, DOC, DOCX</span>
-                    </label>
-                  </div>
-                  <span class="convo-error">Please upload your resume</span>
-                </div>
-              </div>
-            </div>
 
           </div>
 
@@ -678,9 +563,9 @@
               <circle cx="24" cy="24" r="22" stroke="var(--color-primary)" stroke-width="2"/>
               <path d="M15 24l6 6 12-14" stroke="var(--color-primary)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            <h3 class="form-success-title">You're all set!</h3>
-            <p class="form-success-desc">Your application is in. Our team will review it and reach out within 2-3 business days with roles that match your profile.</p>
-            <p class="form-success-note">Keep an eye on your inbox — that's where we'll contact you.</p>
+            <h3 class="form-success-title">Great start!</h3>
+            <p class="form-success-desc">We've sent a follow-up to your email with a few more questions to help us match you to the right roles.</p>
+            <p class="form-success-note">Check your inbox (and spam folder) — complete the next step to finish your application.</p>
           </div>
         </div>
       </div>

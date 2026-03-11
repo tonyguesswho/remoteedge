@@ -10,17 +10,20 @@ CREATE TABLE applications (
   phone text NOT NULL,
   state text NOT NULL,
   role text NOT NULL,
-  experience text NOT NULL,
-  availability text NOT NULL,
   is_student boolean NOT NULL DEFAULT false,
   school_name text,
   school_email text,
-  interest_spark text NOT NULL,
-  learning_approach text NOT NULL,
-  conflict_resolution text NOT NULL,
-  work_style text NOT NULL,
+  status text NOT NULL DEFAULT 'initial',
+  completed_at timestamptz,
+  -- Fields collected via follow-up email form
+  experience text,
+  availability text,
+  interest_spark text,
+  learning_approach text,
+  conflict_resolution text,
+  work_style text,
   additional_info text,
-  resume_url text NOT NULL
+  resume_url text
 );
 
 -- 2. Enable Row Level Security
@@ -32,24 +35,37 @@ CREATE POLICY "Allow anonymous inserts"
   TO anon
   WITH CHECK (true);
 
--- 4. Only authenticated/service role can read (you view via dashboard)
+-- 4. Allow anonymous updates (for completing application via email link)
+CREATE POLICY "Allow anonymous updates by id"
+  ON applications FOR UPDATE
+  TO anon
+  USING (true)
+  WITH CHECK (true);
+
+-- 5. Allow anonymous select (for loading application on completion page)
+CREATE POLICY "Allow anonymous select by id"
+  ON applications FOR SELECT
+  TO anon
+  USING (true);
+
+-- 6. Only authenticated/service role can read all (you view via dashboard)
 CREATE POLICY "Allow authenticated reads"
   ON applications FOR SELECT
   TO authenticated
   USING (true);
 
--- 5. Create storage bucket for resumes (run separately if needed)
+-- 7. Create storage bucket for resumes (run separately if needed)
 INSERT INTO storage.buckets (id, name, public)
 VALUES ('resumes', 'resumes', true)
 ON CONFLICT (id) DO NOTHING;
 
--- 6. Allow anonymous uploads to resumes bucket
+-- 8. Allow anonymous uploads to resumes bucket
 CREATE POLICY "Allow anonymous resume uploads"
   ON storage.objects FOR INSERT
   TO anon
   WITH CHECK (bucket_id = 'resumes');
 
--- 7. Allow public reads from resumes bucket
+-- 9. Allow public reads from resumes bucket
 CREATE POLICY "Allow public resume reads"
   ON storage.objects FOR SELECT
   TO anon, authenticated

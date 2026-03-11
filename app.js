@@ -282,9 +282,9 @@
 
   if (convoWrapper) {
     // All step numbers in order. Step 4 (school details) is conditional.
-    var ALL_STEPS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15];
+    var ALL_STEPS = [1, 2, 3, 4, 5, 6, 7];
     var CONDITIONAL_STEP = 4; // school details — only if student
-    var LAST_STEP = 15;
+    var LAST_STEP = 7;
     var isStudent = false;
     var currentStep = 1;
     var isSubmitting = false;
@@ -294,10 +294,6 @@
     var btnNext = document.getElementById("convo-next");
     var btnBack = document.getElementById("convo-back");
     var enterHint = document.getElementById("convo-enter-hint");
-    var fileInput = document.getElementById("cf-resume");
-    var fileLabel = document.getElementById("convo-file-label");
-    var fileText = document.getElementById("convo-file-text");
-    var fileArea = document.getElementById("convo-file-area");
 
     function getActiveSteps() {
       return ALL_STEPS.filter(function (s) {
@@ -306,10 +302,8 @@
       });
     }
 
-    // Choice buttons (role, experience, availability, student)
+    // Choice buttons (role, student)
     setupChoiceGroup("cf-role-choices", "cf-role");
-    setupChoiceGroup("cf-experience-choices", "cf-experience");
-    setupChoiceGroup("cf-availability-choices", "cf-availability");
     setupChoiceGroup("cf-student-choices", "cf-student", function (value) {
       isStudent = value === "yes";
     });
@@ -334,37 +328,6 @@
         // Auto-advance after a short delay for choice buttons
         setTimeout(function () { goNext(); }, 350);
       });
-    }
-
-    // File input handling
-    if (fileInput && fileLabel && fileText) {
-      fileInput.addEventListener("change", function () {
-        if (this.files && this.files.length > 0) {
-          fileText.textContent = this.files[0].name;
-          fileLabel.classList.add("has-file");
-          var err = fileInput.closest(".convo-field").querySelector(".convo-error");
-          if (err) err.classList.remove("visible");
-        } else {
-          fileText.textContent = "Choose a file or drag it here";
-          fileLabel.classList.remove("has-file");
-        }
-      });
-
-      // Drag and drop
-      if (fileArea) {
-        ["dragenter", "dragover"].forEach(function (evt) {
-          fileArea.addEventListener(evt, function (e) {
-            e.preventDefault();
-            fileArea.classList.add("drag-active");
-          });
-        });
-        ["dragleave", "drop"].forEach(function (evt) {
-          fileArea.addEventListener(evt, function (e) {
-            e.preventDefault();
-            fileArea.classList.remove("drag-active");
-          });
-        });
-      }
     }
 
     // Clear errors on input
@@ -468,15 +431,6 @@
         }
       });
 
-      // Check file input on resume step
-      if (n === LAST_STEP && fileInput) {
-        if (!fileInput.files || fileInput.files.length === 0) {
-          var err = fileInput.closest(".convo-field").querySelector(".convo-error");
-          if (err) err.classList.add("visible");
-          valid = false;
-        }
-      }
-
       return valid;
     }
 
@@ -548,7 +502,7 @@
 
     function submitForm() {
       isSubmitting = true;
-      btnNext.innerHTML = "Sending your application\u2026";
+      btnNext.innerHTML = "Getting you started\u2026";
       btnNext.classList.add("submitting");
       btnNext.setAttribute("disabled", "true");
 
@@ -557,59 +511,47 @@
         "Authorization": "Bearer " + SUPABASE_KEY
       };
 
-      // Upload resume
-      var resumePromise;
-      if (fileInput && fileInput.files && fileInput.files.length > 0) {
-        var file = fileInput.files[0];
-        var fileName = Date.now() + "-" + file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
-        resumePromise = fetch(SUPABASE_URL + "/storage/v1/object/resumes/" + encodeURIComponent(fileName), {
-          method: "POST",
-          headers: Object.assign({}, headers, { "Content-Type": file.type }),
-          body: file
-        }).then(function (res) {
-          if (!res.ok) return null;
-          return SUPABASE_URL + "/storage/v1/object/public/resumes/" + encodeURIComponent(fileName);
-        }).catch(function () { return null; });
-      } else {
-        resumePromise = Promise.resolve(null);
-      }
+      var data = {
+        first_name: document.getElementById("cf-firstName").value.trim(),
+        last_name: document.getElementById("cf-lastName").value.trim(),
+        email: document.getElementById("cf-email").value.trim(),
+        phone: document.getElementById("cf-phone").value.trim(),
+        state: document.getElementById("cf-state").value,
+        role: document.getElementById("cf-role").value,
+        is_student: isStudent,
+        school_name: isStudent ? document.getElementById("cf-schoolName").value.trim() : null,
+        school_email: isStudent ? document.getElementById("cf-schoolEmail").value.trim() : null,
+        status: "initial"
+      };
 
-      resumePromise.then(function (resumeUrl) {
-        var data = {
-          first_name: document.getElementById("cf-firstName").value.trim(),
-          last_name: document.getElementById("cf-lastName").value.trim(),
-          email: document.getElementById("cf-email").value.trim(),
-          phone: document.getElementById("cf-phone").value.trim(),
-          state: document.getElementById("cf-state").value,
-          role: document.getElementById("cf-role").value,
-          experience: document.getElementById("cf-experience").value,
-          availability: document.getElementById("cf-availability").value,
-          is_student: isStudent,
-          school_name: isStudent ? document.getElementById("cf-schoolName").value.trim() : null,
-          school_email: isStudent ? document.getElementById("cf-schoolEmail").value.trim() : null,
-          interest_spark: document.getElementById("cf-interest").value.trim(),
-          learning_approach: document.getElementById("cf-learning").value.trim(),
-          conflict_resolution: document.getElementById("cf-conflict").value.trim(),
-          work_style: document.getElementById("cf-workstyle").value.trim(),
-          additional_info: document.getElementById("cf-additional").value.trim() || null,
-          resume_url: resumeUrl
-        };
-
-        return fetch(SUPABASE_URL + "/rest/v1/applications", {
+      // Insert application into Supabase
+      fetch(SUPABASE_URL + "/rest/v1/applications", {
+        method: "POST",
+        headers: Object.assign({}, headers, {
+          "Content-Type": "application/json",
+          "Prefer": "return=representation"
+        }),
+        body: JSON.stringify(data)
+      }).then(function (res) {
+        if (!res.ok) throw new Error("Insert failed");
+        return res.json();
+      }).then(function (rows) {
+        var application = rows[0];
+        // Trigger the completion email via Supabase Edge Function
+        return fetch(SUPABASE_URL + "/functions/v1/send-completion-email", {
           method: "POST",
-          headers: Object.assign({}, headers, {
-            "Content-Type": "application/json",
-            "Prefer": "return=minimal"
-          }),
-          body: JSON.stringify(data)
-        }).then(function (res) {
-          if (!res.ok) throw new Error("Insert failed");
+          headers: Object.assign({}, headers, { "Content-Type": "application/json" }),
+          body: JSON.stringify({
+            application_id: application.id,
+            email: application.email,
+            first_name: application.first_name
+          })
         });
       }).then(function () {
         convoWrapper.hidden = true;
         formSuccess.hidden = false;
         formSuccess.scrollIntoView({ behavior: "smooth", block: "start" });
-        showToast("Application submitted successfully!");
+        showToast("You're in! Check your email for next steps.");
         setTimeout(launchConfetti, 600);
       }).catch(function () {
         showToast("We couldn't submit your application. Check your connection and try again.");
