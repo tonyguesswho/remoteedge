@@ -1,7 +1,7 @@
 import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 
 const RESEND_API_KEY = Deno.env.get("RESEND_API_KEY");
-const SITE_URL = Deno.env.get("SITE_URL") || "https://remoteedge.com";
+const SITE_URL = Deno.env.get("SITE_URL") || "https://notifications.21vest.com";
 
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
@@ -33,7 +33,7 @@ serve(async (req) => {
         Authorization: `Bearer ${RESEND_API_KEY}`,
       },
       body: JSON.stringify({
-        from: "RemoteEdge <apply@remoteedge.com>",
+        from: "RemoteEdge <onboarding@resend.dev>",
         to: [email],
         subject: `${first_name}, let's finish your application!`,
         html: `
