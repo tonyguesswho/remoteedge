@@ -32,7 +32,7 @@
      SUPABASE CONFIG
      ======================================== */
   var SUPABASE_URL = "https://adfxertqtrisgyujmjkm.supabase.co"; // e.g. "https://xyzcompany.supabase.co"
-  var SUPABASE_KEY = "sb_publishable_mCTFFkVk8j2NV-DFtq1ahQ_xIHG1N1A"; // anon/public key (safe for frontend)
+  var SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFkZnhlcnRxdHJpc2d5dWptamttIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMwMDMxOTEsImV4cCI6MjA4ODU3OTE5MX0.08smbO5WzXw1eAbBXwhqKOa4RmbEqggH2Yxc8uj5SI8"; // anon/public key (safe for frontend)
 
   /* ========================================
      THEME TOGGLE
